@@ -1,5 +1,23 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
-  </div>
+<div>
+  <TopBarMenu/>
+  <br><br><br><br>
+  <p>dentro do aboutradfsdffdf</p>
+</div>
+  
 </template>
+
+<script>
+import TopBarMenu from '../components/TopBarMenu.vue'
+export default {
+  components:{
+    TopBarMenu,
+  }
+}
+</script>
+
+<style>
+  p{
+    margin-top: 100px;
+  }
+</style>
