@@ -1,14 +1,8 @@
 <template>
-  <div id="home-container"> 
-    <header>
-      <TopBarMenu id="top-bar"/>
-    </header>
-  
+  <div id="home-container">   
     <main>
       <section>
         <article id="home">
-        <TopBarMenu id="top-bar"/>
-          
           <header class="article-header">
             <hgroup>
               <h1 class="title">NOME DA MARCA</h1>
@@ -37,15 +31,13 @@
             <button type="submit">Pesquisar</button>
           </form>          
         </article>
-        <article id="como_funciona">
-          <TopBarMenu id="top-bar"/>
-          <!-- <a href="#home" class="btn_top">Para o topo</a> -->
+        <article id="como_funciona">          
           <h1 class="title">COMO FUNCIONA?</h1>
           <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque enim aspernatur iste adipisci debitis autem? Asperiores architecto iste, a fuga id nihil tempora qui voluptatum officiis veritatis neque vel! Harum.</p>
 
         </article >
         <article id="contact_us">
-          <TopBarMenu id="top-bar"/>
+          <TopBarMenu id="top-bar" :slot1="login" :slot2="searchId" :slot3="whtWork" :slot4="contactUs"/>
           <h1>FALE CONOSCO</h1>
           <form action="" method="post" id="form_submit">
             <fieldset>
@@ -80,10 +72,30 @@ import TopBarMenu from '@/components/TopBarMenu.vue'
 import Buttons from '@/components/Buttons.vue'
 export default {
   name: 'Home',
+  data(){
+    return{
+      login : {
+        value : 'Login',
+        route : '/login'
+      },
+      searchId : {
+        value : 'Encontrou um PET?',
+        route : '#searchId'
+      },
+      whtWork : {
+        value : 'Como Funciona?',
+        route : '#como_funciona'
+      },
+      contactUs : {
+        value : 'Fale Conosco',
+        route : '#contact_us'
+      }
+    }
+  },
   components: {
     TopBarMenu,
     Buttons
-  }
+  },
 }
 </script>
 

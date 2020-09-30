@@ -6,10 +6,10 @@
             <router-link to="/"><img src="../assets/logo_pet.png" alt="logomarca" id="logo" @click="check(0)"></router-link>
            
                 <ul class="menu" id="menu">
-                    <li class="menu-item"><router-link to="/login"><div>Login</div></router-link></li>
-                    <li class="menu-item"><a href="#searchId"><div>Encontrou um pet?</div> </a></li>
-                    <li class="menu-item"><a href="#como_funciona"><div> Como funciona</div></a></li>
-                    <li class="menu-item"><a href="#contact_us"><div> Contato</div></a></li>
+                    <li class="menu-item"><router-link :to="slot1.route"><div>{{slot1.value}}</div></router-link></li>
+                    <li class="menu-item"><a :href="slot2.route"><div>{{slot2.value}}</div></a></li>
+                    <li class="menu-item"><a :href="slot3.route"><div>{{slot3.value}}</div></a></li>
+                    <li class="menu-item"><a :href="slot4.route"><div>{{slot4.value}}</div></a></li>
                 </ul>                         
         </nav>    
     </div>
@@ -17,6 +17,12 @@
 
 <script>
 export default {
+    props:{
+        slot1 : Object,
+        slot2 : Object,
+        slot3 : Object,
+        slot4 : Object
+    }
 }
 </script>
 

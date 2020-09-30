@@ -5,11 +5,11 @@
     </header>
     <div id="login-container">
       <div id="content">
-        <form action="" method="get" id="form_login">
+        <form action="/backend" method="POST" id="form_login">
           <legend>Login</legend>
           <div class="input-block">
             <label for="email">Email:</label>
-            <input type="text" name="email" id="email" required>
+            <input type="email" name="email" id="email" required>
           </div>
           <div class="input-block">
             <label for="">Senha:</label>
@@ -20,7 +20,7 @@
           </div>     
         </form>
         <div class="footer-form">
-            <button type="submit" form="form_login">Entrar</button>             
+            <button type="submit" @click="login">Entrar</button>             
             <router-link to="/cadastro" class="router">Não é cadastrado ainda?</router-link>  
         </div>
       </div>
@@ -38,7 +38,16 @@ export default {
   },
   methods:{
     login(){
-
+      var email = document.querySelector("#email").value
+      var password = document.querySelector('#password').value
+      alert(password.length)
+      if(email.indexOf('@') == -1 || email.indexOf('.') == -1){
+        alert('digite um email válido')
+      }else if(password.length < 8){
+        alert('Sua senha deve conter pelo menos 8 caracteres')
+      }else{
+        window.location.replace('/page_user');
+      }
     }
   }
 }
