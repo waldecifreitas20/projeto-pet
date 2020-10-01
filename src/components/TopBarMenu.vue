@@ -40,14 +40,14 @@ export default {
     }
     
     #asset_menu{
-        z-index: 4;
+        z-index: 9;
         padding: .5rem;
         position: fixed;
         top: 2rem;
         left: 2rem;
     }
     #asset_menu:hover{
-        z-index: 4;
+        z-index: 8;
         border: 1px solid #a002e9;
         
     }
@@ -55,7 +55,7 @@ export default {
         display: none;
     }
     .menu-block{
-        z-index: 3;
+        z-index: 7;
         width: 100%;
         height: 8rem;
         background-color: #9b09d4;
@@ -141,7 +141,7 @@ export default {
             top: 0;
         }
         .menu-block{
-            z-index: initial;
+            z-index: 10;
             width: 100%;
             height: 70px;
             background-color: #9b09d4;
