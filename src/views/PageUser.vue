@@ -6,10 +6,12 @@
         <div id="container">
             <div id="home">
                 <header>
-                    <div class="input-block" v-for="item in pets" :key="item.id">
-                        <input type="radio" name="pet" class="input-radio" @click="changePet" checked>
+                    <h1>Meus Pets</h1>                    
+                    <div class="input-block" v-for="(item,index) in pets" :key="item.id">
+                        <input type="radio" name="pet" :id="index" class="input-radio" @click="changePet" checked>
+                        <label :for="index">{{item.name}}</label>
                     </div>
-                    <a href="#add_pet" class="btn-add" @click="addPet"><span>+</span>Adicionar pet</a>
+                    <a href="#add_pet" class="btn-add" @click="addPet"><span></span>Adicionar pet</a>
                 </header>
                 
                 
@@ -215,7 +217,7 @@ export default {
             objeto : {
                     check: true,
                     image:'https://conteudo.imguol.com.br/c/entretenimento/54/2020/04/28/cachorro-pug-1588098472110_v2_450x337.jpg" alt="cachorro',
-                    name : 'Bob',
+                    name : 'Guvo',
                     age : '10',
                     specie : 'Cachorro',
                     nextVac : 'Anti Rabica - 20/03/21',
@@ -229,7 +231,7 @@ export default {
                 {
                     check: true,
                     image:'https://conteudo.imguol.com.br/c/entretenimento/54/2020/04/28/cachorro-pug-1588098472110_v2_450x337.jpg" alt="cachorro',
-                    name : 'Bob',
+                    name : 'Bombadier Sant',
                     age : '10',
                     specie : 'Cachorro',
                     nextVac : 'Anti Rabica - 20/03/21',
@@ -242,7 +244,7 @@ export default {
                 {
                     check : false,
                     image : 'https://static1.patasdacasa.com.br/articles/7/44/7/@/1498-algumas-racas-de-cachorro-sao-mais-indep-opengraph_1200-1.jpg',
-                    name : 'Bob2',
+                    name : 'Gustavo',
                     age : '10',
                     specie : 'Cachorro',
                     nextVac : 'Anti Rabica - 20/03/21',
@@ -255,7 +257,7 @@ export default {
                 {
                     check: false,
                     image:'https://s2.glbimg.com/slaVZgTF5Nz8RWqGrHRJf0H1PMQ=/0x0:800x450/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2019/U/e/NTegqdSe6SoBAoQDjKZA/cachorro.jpg',
-                    name : 'Bob3',
+                    name : 'Whindersson',
                     age : '10',
                     specie : 'Cachorro',
                     nextVac : 'Anti Rabica - 20/03/21',
@@ -289,7 +291,7 @@ export default {
             }           
         },
         addPet(){
-            alert('aaaaa')
+            
         }
     }
 
@@ -320,6 +322,67 @@ export default {
         position: relative;
         top: -15rem;
         height: 100%;
+    }
+    #home header h1{
+        border-bottom: .4rem solid;
+        margin-bottom: 1rem;
+    }
+    #home header .input-block{
+        display: inline-block;
+        margin-right: 1rem;
+    }
+
+    #home .input-block label{
+        display: flex;
+        border: .3rem solid #d6027e;
+        padding: .3rem;
+        width: 100%;
+        height: 5rem;
+        align-items: center;
+        margin-right: 1rem;
+        border-radius: 1rem;
+        margin-top: 1rem;
+    }
+    #home .input-block label::before{
+        content: ""; 
+        display: inline-block;
+        width: 2rem;
+        height: 2rem;       
+        border: .3rem solid #d6027e;
+        border-radius: 100%;
+        margin: 0 1rem;
+    }
+    #home .input-block [type="radio"]:checked + label{
+        background: #d6027e;
+        color: white;
+    }
+    #home .input-block [type="radio"]:checked + label::before{
+        width: 1rem;
+        height: 1rem;
+        border: .75rem solid white;
+    }
+    #home header .input-block .input-radio{
+        opacity: 0;
+        display: none;
+        width: 2rem;
+        height: 2rem;
+    }
+    #home .btn-add{
+        display: block;
+        border: .2rem solid;
+        width: 50%;
+        padding: 1rem;
+        margin: 2rem 0;
+        border-radius: 1rem;
+        text-align: center;
+        color: #d6027e;
+    }
+    #home .btn-add span{
+        color: rgb(0, 177, 0);
+        margin-right: 1rem;
+        padding: 1rem 2rem;
+        background: url('../assets/btn_add.png') no-repeat center;
+        background-size: 100% 70%; 
     }
     #home iframe{
         z-index: 1;
@@ -396,5 +459,8 @@ export default {
             font-size: 15px;
         }
     }
+    /* ================================ADD PET==================================== */
+
+    /* ==============================MY PROFILE=================================== */
     
 </style>
