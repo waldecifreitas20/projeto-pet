@@ -552,6 +552,7 @@ export default {
             height: 80px;
             width: 100%;
             margin: 20px 0;
+            font-size: 25px;
         }
        
     
