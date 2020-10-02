@@ -19,15 +19,17 @@
                     <ul class="list-data-pet" v-if="pet.check">
                         <img :src="pet.image" class="img-item" v-if="pet.image != ''">
                         <div class="not-found-img" v-else><span>+</span>Adicionar foto</div>
-                        <li class="list-item" name="name-pet" id="name-pet"><h1>{{pet.name}}</h1></li>
-                        <li class="list-item" name="age-pet" id="age-pet">idade: {{pet.age}}</li>
-                        <li class="list-item" name="specie-pet" id="specie-pet">Espécie: {{pet.specie}}</li>
-                        <li class="list-item" name="next-vacine" id="next-vacine">Proxima vacina: {{pet.nextVac}}</li>
-                        <li class="list-item" name="identifier" id="identifier">ID: {{pet.id}}</li>
-                        <li class="list-item" name="responsible" id="responsible">Responsavel: {{pet.responsible}}</li>
-                        <li class="list-item" name="address" id="address">Endereço: {{pet.address}}</li>
-                        <li class="list-item" name="complement" id="complement">Complemento: {{pet.complement}}</li>
-                        <li class="list-item" name="last-localization" id="last-localization">Ultima localização: <iframe :src="pet.lastLoc" width="250" height="200" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe></li>
+                        <div class="list-item-block">
+                            <li class="list-item" name="name-pet" id="name-pet"><h1>{{pet.name}}</h1></li>
+                            <li class="list-item" name="age-pet" id="age-pet">idade: {{pet.age}}</li>
+                            <li class="list-item" name="specie-pet" id="specie-pet">Espécie: {{pet.specie}}</li>
+                            <li class="list-item" name="next-vacine" id="next-vacine">Proxima vacina: {{pet.nextVac}}</li>
+                            <li class="list-item" name="identifier" id="identifier">ID: {{pet.id}}</li>
+                            <li class="list-item" name="responsible" id="responsible">Responsavel: {{pet.responsible}}</li>
+                            <li class="list-item" name="address" id="address">Endereço: {{pet.address}}</li>
+                            <li class="list-item" name="complement" id="complement">Complemento: {{pet.complement}}</li>
+                            <li class="list-item" name="last-localization" id="last-localization">Ultima localização: <iframe :src="pet.lastLoc" width="250" height="200" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe></li>
+                        </div>    
                     </ul>
                 </div>
                             
@@ -342,6 +344,8 @@ export default {
         margin-right: 1rem;
         border-radius: 1rem;
         margin-top: 1rem;
+        cursor: pointer;
+        transition: all .4s;
     }
     #home .input-block label::before{
         content: ""; 
@@ -351,6 +355,11 @@ export default {
         border: .3rem solid #d6027e;
         border-radius: 100%;
         margin: 0 1rem;
+        transition: all .4s;
+    }
+    #home .input-block label:hover{
+        background: #fc6ec1;
+        color: white;
     }
     #home .input-block [type="radio"]:checked + label{
         background: #d6027e;
@@ -359,7 +368,7 @@ export default {
     #home .input-block [type="radio"]:checked + label::before{
         width: 1rem;
         height: 1rem;
-        border: .75rem solid white;
+        border: .8rem solid white;
     }
     #home header .input-block .input-radio{
         opacity: 0;
@@ -376,6 +385,12 @@ export default {
         border-radius: 1rem;
         text-align: center;
         color: #d6027e;
+
+        transition: all 400ms;
+    }
+    #home .btn-add:hover{
+        background: #d6027e;
+        color: white;
     }
     #home .btn-add span{
         color: rgb(0, 177, 0);
@@ -406,6 +421,11 @@ export default {
     #home .list-data-pet .list-item:first-child{
         margin-bottom: 4rem;
         border-bottom: .4rem solid;
+    }
+    #home .img-item{
+        border-radius: 1rem;
+        border: .4rem solid rgba(184, 3, 255, 0.377);    
+        border-bottom: .8rem solid rgba(184, 3, 255, 0.377);
     }
     
     #home .btn-block{
@@ -443,24 +463,104 @@ export default {
         width: 100%;
     }
     @media(min-width: 800px){
-        #page-user{
-            height: 100%;
-        }
-        #container{
-            width: 70%;
-            padding: 0 20px;
-        }
         #home{
             padding: 0;
             padding-top: 350px;
-            
+            height: 330vh;
+        }
+        #home header h1{
+            font-size: 100%;
+            border-bottom: 2px solid;
+        }        
+        #home .input-block label{
+            font-size: 20px;
+            min-width: 200px;
+            width: 100%;
+            height: 50px;
+            border: none;
+            margin: 0;
+            padding: 0;
+            box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.082);
+        }
+        #home .input-block label::before{
+            width: 13px;
+            height: 13px;
+            margin-right: 5px;
+            border: 2px solid rgb(219, 0, 110);;
+        }
+        #home .input-block [type="radio"]:checked + label::before{
+            width: 8px;
+            height: 8px;
+            border: 5px solid white;
+        }
+        #home .btn-add{
+            width: 200px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            font-size: 20px;
+            padding: 0;
+            padding-top: 2px;
+            padding-left: 10px;
+        }
+        #home .btn-add span{
+            display: block;
+            padding: 18px 15px;
+            margin-right: 10px;
+            background-position: left;
+            background-size: 100% 80%;
+        }
+        #home .list-item-block #last-localization{
+            position: absolute;
+            z-index: 12;
+            display: block;
+            left: 0;
+            width: 100%;
+            padding: 10px;
         }
         #home .list-data-pet{
-            font-size: 15px;
+            display: flex;
+            justify-content: space-between;
         }
+        #home .img-item{
+            max-height: 350px;
+            box-sizing: content-box;
+            max-width: 50%;
+            margin-top: 24px;
+            display: block;
+            border: 2px solid rgba(184, 3, 255, 0.377);    
+            border-bottom: 4px solid rgba(184, 3, 255, 0.377);
+        }
+        #home .list-item-block{
+            display: block;
+            
+        }
+        #home .list-item{
+            margin: 0;
+            font-size: 15px;
+            width:  500px;
+        }
+        #home .btn-block{
+            width: 50%;
+            position: absolute;
+            top: 1000px;
+            left: 0;
+            flex-direction: column;
+        }
+        #home .btn-block #btn-edit,
+        #home .btn-block #btn-update{
+            height: 80px;
+            width: 100%;
+            margin: 20px 0;
+        }
+       
+    
+    
     }
     /* ================================ADD PET==================================== */
-
+    #add_pet{
+        display: none;
+    }
     /* ==============================MY PROFILE=================================== */
     
 </style>
