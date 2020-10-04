@@ -23,7 +23,7 @@ const routes = [
   },
   {
     path: '/page_user',
-    name: 'pageUser',
+    name: 'pageuser',
     component: PageUser,
   },
 ]

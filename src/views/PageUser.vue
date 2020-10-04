@@ -34,7 +34,7 @@
                 </div>
                             
                 <div class="btn-block">
-                    <Buttons value="Editar dados" id="btn-edit" @click="cl()"/>
+                    <Buttons value="Editar dados" route="#add_pet" id="btn-edit" @click="changePage('#home','#add_pet')"/>
                     <Buttons value="Atualizar Localização" id="btn-update"/>
                 </div>
                 
@@ -46,7 +46,7 @@
 
             </div>
             <div id="add_pet">
-                <form action="" method="post">
+                <form action="" method="post" id="form-pet">
                     <fieldset>                      
                         <legend>Dados do PET</legend>
                         
@@ -294,6 +294,13 @@ export default {
         },
         addPet(){
             
+        },
+        changePage(pageFrom, pageTo){
+            var from = document.querySelector(pageFrom)
+            var to = document.querySelector(pageTo)
+            
+            from.style.display = 'none'
+            to.style.display = 'block'
         }
     }
 
@@ -324,6 +331,7 @@ export default {
         position: relative;
         top: -15rem;
         height: 100%;
+        display: none;
     }
     #home header h1{
         border-bottom: .4rem solid;
@@ -427,7 +435,7 @@ export default {
         border: .4rem solid rgba(184, 3, 255, 0.377);    
         border-bottom: .8rem solid rgba(184, 3, 255, 0.377);
     }
-    
+
     #home .btn-block{
         display: flex;
         justify-content: space-between;
@@ -560,8 +568,45 @@ export default {
     }
     /* ================================ADD PET==================================== */
     #add_pet{
-        display: none;
+        display: block;
+        min-height: 106rem;
+        padding-top: 10rem;
+        font-size: 3rem;
     }
+    #add_pet #form-pet legend{
+        display: block;
+        width: 100%;
+        font-size: 5rem;
+        color: #d6027e;
+        border-bottom: .3rem solid;
+        margin-bottom: 2rem;
+    }
+    #add_pet #form-pet .input-block{
+        color: #d6027e;
+        height: 10rem;        
+    }
+    .input-block [type="checkbox"]{
+        width: 3rem;
+    }
+    .input-block input{
+        width: 100%;
+        display: block;
+        height: 3rem;
+        font-size: 3rem;
+        background-color: transparent;
+        border-radius: 1rem;
+        padding: 1rem;
+        transition: all 500ms;
+        color: rgb(255, 0, 64);
+    }
+    .input-block input:valid,
+    .input-block input:focus{
+        background-color: #fc6ec1;
+        height: 6rem;
+        color: black;
+    }
+
+    
     /* ==============================MY PROFILE=================================== */
     
 </style>

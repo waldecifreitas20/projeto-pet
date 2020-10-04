@@ -238,7 +238,7 @@ export default {
             
             
             var elements = {
-                name : { val : document.querySelector("#name")},           //0              
+                name : { val : document.querySelector("#name")},          //0              
                 email : { val : document.querySelector("#email")},         //1
                 password : { val : document.querySelector("#password")},   //2
                 address : { val : document.querySelector("#address")},     //3
@@ -316,7 +316,7 @@ export default {
                 formUser.setAttribute("style", "display: none")
                 formPet.setAttribute("style", "display: block")
             }
-        },
+        }
     }
 }
 </script>
