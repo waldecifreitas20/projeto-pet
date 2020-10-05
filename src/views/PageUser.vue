@@ -43,7 +43,6 @@
 
             </div>
             <div id="pet_data">
-
             </div>
             <div id="add_pet">
                 <form action="" method="post" id="form-pet">
@@ -88,6 +87,7 @@
                             <label for="cep_pet">CEP:</label>
                             <input type="number" name="cep_pet" id="cep_pet" required>
                         </div>
+                        
                         <fieldset class="vacination_field">
                             <legend>Vacinação</legend>
                             <div class="select-block">
@@ -186,9 +186,9 @@
                 </form>
             </div>
         </div>
-    </div>    
+    </div> 
+       
 </template>
-
 <script>
 import TopBarMenu from '../components/TopBarMenu.vue'
 import Buttons from '../components/Buttons.vue'
