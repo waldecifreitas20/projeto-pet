@@ -13,7 +13,7 @@
                         
                         <div class="input-block name">
                             <label for="name">Nome:</label>
-                            <input type="text" name="name" id="name" required pattern="[A-Za-z]+" placeholder="Nome Completo">
+                            <input type="text" name="name" id="name" required pattern="[a-z\s]+$" placeholder="Nome Completo">
                             <div class="error_tag error_name" id="error">Preencha esse campo</div>
                         </div>
                         <div class="input-block email">
@@ -386,9 +386,6 @@ export default {
         padding: 5rem 2rem;
         top: 0rem;                
     }
-    #form-user fieldset{
-        display: flex;
-    }
     .input-block{
         padding: 1rem 0;
         color: rgb(4, 255, 255);
@@ -479,11 +476,12 @@ export default {
             margin-bottom: 30px;
             padding-top: 10px;
         }
-        .flex{
+        #form-user .flex{
             display: grid;
             column-gap: 30px;
             justify-content: space-between;
             grid-template-columns: 1fr 1fr;
+            
         }
         .flex .input-block input{
             width: 100%;

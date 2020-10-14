@@ -69,7 +69,7 @@
                         </div>
                         <div class="input-block checkbox-house">                            
                             <input type="checkbox" name="chk_house" id="chk_house" checked v-model="check_address_pet">
-                            <label for="chl_house">O animal mora em minha residência</label>
+                            <label for="chk_house">O animal mora em minha residência</label>
                         </div>
                         <div class="input-block address" v-if="!check_address_pet">
                             <label for="address">Endereço:</label>
@@ -104,7 +104,7 @@
                                 <div class="input-vermifugation vermifugation_cat">
                                     <div class="input-block">
                                         <input type="checkbox" name="chk_vac_vermifug" id="chk_vac_vermifug_c" v-model="vacination_check[0]">
-                                        <label for="name">Vermifugação</label>
+                                        <label for="chk_vac_vermifug_c">Vermifugação</label>
                                     </div>                                        
                                     <div class="subinput-block" v-show="vacination_check[0]">
                                         <label for="input_vermifug">Data da última dose:</label>
@@ -128,7 +128,7 @@
                                 <div class="input-valenties valenties_cats">
                                     <div class="input-block">
                                         <input type="checkbox" name="chk_vac_valenties" id="chk_vac_valenties_c" v-model="vacination_check[2]">
-                                        <label for="name">V3, V4 ou V5</label>
+                                        <label for="chk_vac_valenties_c">V3, V4 ou V5</label>
                                     
                                     </div>
                                     
@@ -144,7 +144,7 @@
                                 <div class="input-vermifugation vermifugation_dog">
                                     <div class="input-block">
                                         <input type="checkbox" name="chk_vac_vermifug" id="chk_vac_vermifug" v-model="vacination_check[0]" >
-                                        <label for="name">Vermifugação</label>
+                                        <label for="chk_vac_vermifug">Vermifugação</label>
                                     
                                     </div>
                                     
@@ -157,7 +157,7 @@
                                 <div class="input-antRab antRab_dog">
                                     <div class="input-block">
                                         <input type="checkbox" name="chk_vac_antRab" id="chk_vac_antRab" v-model="vacination_check[1]">
-                                        <label for="name">Anti-Rábica</label>
+                                        <label for="chk_vac_antRab">Anti-Rábica</label>
                                     
                                     </div>
                                     
@@ -170,7 +170,7 @@
                                 <div class="input-valenties valenties_dog">
                                     <div class="input-block">
                                         <input type="checkbox" name="chk_vac_antRab" id="chk_vac_valenties" v-model="vacination_check[2]">
-                                        <label for="name">V8 ou V10</label>
+                                        <label for="chk_vac_valenties">V8 ou V10</label>
                                     
                                     </div>
                                     
@@ -583,27 +583,85 @@ export default {
     }
     #add_pet #form-pet .input-block{
         color: #d6027e;
-        height: 10rem;        
+        height: 10rem;
+                
+    }
+    #form-pet .flex .input-block{
+        margin-bottom: 2rem;
     }
     .input-block [type="checkbox"]{
-        width: 3rem;
+        width: 2.4rem;
     }
-    .input-block input{
+    #form-pet .checkbox-house, 
+    #form-pet [type=checkbox],
+    #form-pet .checkbox-medal{
+        display: grid;
+        grid-template-columns: 6% 1fr;
+        align-items: center;
+        height: 3rem;
+        gap: .3rem;
+        box-shadow: none;
+    }
+    #form-pet .select-block{
+       color: #d6027e;
+    }
+    #form-pet .select-block select{
+        margin-top: 1rem;
+        width:100%;
+        height: 6rem;
+        border-radius: 1rem;
+        background-color: #fc6ec1;
+        border: none;
+        color: rgb(255, 255, 255);
+        margin-bottom: 4rem;
+        font-size: 3rem;
+        padding: 0 1rem;
+        box-shadow: .3rem .3rem 1rem #fc6ec1;
+    }
+    #form-pet .select-block select option{
+        font-size: .8rem;
+        width: 10rem;
+        color: rgb(253, 253, 253);
+        box-shadow: none;
+    }
+    #form-pet .vacination_field{
+        margin-top: 5rem;
+    }
+    #form-pet .vacination_field .input-block{
+        display: grid;
+        grid-template-columns: 6% 1fr;
+        align-items: center;
+    }
+    .vacination_field .subinput-block{
+        margin-left: 3rem;
+        color: #d6027e;
+        font-size: 2.9rem;
+    }
+    
+    .input-block input,
+    .vacination_field .subinput-block input{
         width: 100%;
         display: block;
         height: 3rem;
         font-size: 3rem;
         background-color: transparent;
-        border-radius: 1rem;
-        padding: 1rem;
+        
+        padding: 2rem 0rem;
         transition: all 500ms;
         color: rgb(255, 0, 64);
+        border-bottom: .3rem solid #d6027e;
+       
     }
     .input-block input:valid,
-    .input-block input:focus{
+    .input-block input:focus,
+    .select-block select:focus{
         background-color: #fc6ec1;
         height: 6rem;
         color: black;
+        border-radius: 1rem;
+        box-shadow: .3rem .3rem 1rem #fc6ec1;
+        padding: 1rem;
+        
     }
 
     
