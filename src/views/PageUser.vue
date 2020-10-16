@@ -11,7 +11,7 @@
                         <input type="radio" name="pet" :id="index" class="input-radio" @click="changePet" checked>
                         <label :for="index">{{item.name}}</label>
                     </div>
-                    <a href="#add_pet" class="btn-add" @click="addPet"><span></span>Adicionar pet</a>
+                    <a href="#add_pet" class="btn-add" @click="changePage('#home','#add_pet')"><span></span>Adicionar pet</a>
                 </header>
                 
                 
@@ -45,10 +45,161 @@
             <div id="pet_data">
             </div>
             <div id="add_pet">
-                <form action="" method="post" id="form-pet">
+                <form action="" method="post" id="form-pet" enctype="multipart/form-data">
                     <fieldset>                      
                         <legend>Dados do PET</legend>
                         
+                        <div class="add-photo">
+                            <img src="" alt="" id="preview-pet" v-show="selected">
+                            <input type="file" name="" id="select-file" accept=".png, .jpg" @change="selectedFile" hidden>
+                            <label for="select-file" :class="{ 'selected': selected, 'unselected': !selected }">Selecionar Foto +</label>
+                        </div>
+                        <div class="flex">
+                            <div class="input-block name-pet">
+                                <label for="name">Nome:</label>
+                                <input type="text" name="name_pet" id="name_pet" pattern="[A-Za-z]+" required>
+                            </div>
+                            <div class="input-block years">
+                                <label for="name">Nascimento:</label>
+                                <input type="date" name="years" id="years" required>
+                            </div>
+                        </div>
+                        <div class="input-block checkbox-medal">                            
+                            <input type="checkbox" name="chk_medal" id="chk_medal" v-model="have_medal_check">
+                            <label for="chk_medal">Já tenho uma medalha</label>
+                        </div>
+                        <div class="input-block medal" v-if="have_medal_check">
+                            <label for="address">Informe o ID da medalha:</label>
+                            <input type="text" name="id_pet" id="id_pet" required>
+                        </div>
+                        <div class="input-block checkbox-house">                            
+                            <input type="checkbox" name="chk_house" id="chk_house" checked v-model="check_address_pet">
+                            <label for="chk_house">O animal mora em minha residência</label>
+                        </div>
+                        <div class="input-block address" v-if="!check_address_pet">
+                            <label for="address">Endereço:</label>
+                            <input type="text" name="address_pet" id="address_pet" required>
+                        </div>
+                        <div class="input-block number_house_pet" v-if="!check_address_pet">
+                            <label for="cep_pet">Nº:</label>
+                            <input type="number" name="number_house_pet" id="number_house_pet" required>
+                        </div>
+                        <div class="input-block neighborhood" v-if="!check_address_pet">
+                            <label for="neighborhood_pet">Bairro:</label>
+                            <input type="text" name="neighborhood_pet" id="neighborhood_pet" required>
+                        </div>
+                        <div class="input-block cep_pet" v-if="!check_address_pet">
+                            <label for="cep_pet">CEP:</label>
+                            <input type="number" name="cep_pet" id="cep_pet" required>
+                        </div>
+                        
+                        <fieldset class="vacination_field">
+                            <legend>Vacinação</legend>
+                            <div class="select-block">
+                                <label for="species">Selecione a espécie do seu animal</label>
+                                <select name="species" id="species" required v-model="animal">
+                                    <option :value="null" disabled selected>--selecione uma opção--</option>
+                                    <option value="cat">Gato</option>
+                                    <option value="dog">Cachorro</option>
+                                </select>
+                            </div>
+                            <!-- ==========================CAT HTML BLOCK=========================== -->
+                            <div class="species_cat" v-if="(animal == 'cat')">
+
+                                <div class="input-vermifugation vermifugation_cat">
+                                    <div class="input-block">
+                                        <input type="checkbox" name="chk_vac_vermifug" id="chk_vac_vermifug_c" v-model="vacination_check[0]">
+                                        <label for="chk_vac_vermifug_c">Vermifugação</label>
+                                    </div>                                        
+                                    <div class="subinput-block" v-if="vacination_check[0]">
+                                        <label for="input_vermifug">Data da última dose:</label>
+                                        <input type="date" required name="date_vermifug" id="input_vermifu_cg">                                    
+                                    </div>
+                                </div>
+
+                                <div class="input-antRab antRab_cat">
+                                    <div class="input-block">
+                                        <input type="checkbox" name="chk_vac_antRab" id="chk_vac_antRab_c" v-model="vacination_check[1]">
+                                        <label for="chk_vac_antRab_c">Anti-Rábica</label>                                    
+                                    
+                                    </div>
+                                    
+                                    <div class="subinput-block" v-if="vacination_check[1]">
+                                        <label for="input_antRab">Data da última dose:</label>
+                                        <input type="date" required name="date_antRab" id="input_antRab_c">                                   
+                                    </div>                                    
+                                </div>
+
+                                <div class="input-valenties valenties_cats">
+                                    <div class="input-block">
+                                        <input type="checkbox" name="chk_vac_valenties" id="chk_vac_valenties_c" v-model="vacination_check[2]">
+                                        <label for="chk_vac_valenties_c">V3, V4 ou V5</label>
+                                    
+                                    </div>
+                                    
+                                    <div class="subinput-block" v-if="vacination_check[2]">
+                                        <label for="input_valenties">Data da última dose:</label>
+                                        <input type="date" required name="date_valenties" id="input_valenties_c">                                    
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- ==========================DOG HTML BLOCK=========================== -->
+                            <div class="species_dog" v-else>
+
+                                <div class="input-vermifugation vermifugation_dog">
+                                    <div class="input-block">
+                                        <input type="checkbox" name="chk_vac_vermifug" id="chk_vac_vermifug" v-model="vacination_check[0]" >
+                                        <label for="chk_vac_vermifug">Vermifugação</label>
+                                    
+                                    </div>
+                                    
+                                    <div class="subinput-block" v-if="vacination_check[0]">
+                                        <label for="input_vermifug">Data da última dose:</label>
+                                        <input type="date" name="date_vermifug" id="input_vermifug" required>                                    
+                                    </div>
+                                </div>
+
+                                <div class="input-antRab antRab_dog">
+                                    <div class="input-block">
+                                        <input type="checkbox" name="chk_vac_antRab" id="chk_vac_antRab" required v-model="vacination_check[1]">
+                                        <label for="chk_vac_antRab">Anti-Rábica</label>
+                                    
+                                    </div>
+                                    
+                                    <div class="subinput-block" v-if="vacination_check[1]">
+                                        <label for="input_antRab">Data da última dose:</label>
+                                        <input type="date" name="date_antRab" id="input_antRab" required>                                   
+                                    </div>                                    
+                                </div>
+
+                                <div class="input-valenties valenties_dog">
+                                    <div class="input-block">
+                                        <input type="checkbox" name="chk_vac_antRab" id="chk_vac_valenties" v-model="vacination_check[2]">
+                                        <label for="chk_vac_valenties">V8 ou V10</label>
+                                    
+                                    </div>
+                                    
+                                    <div class="subinput-block" v-if="vacination_check[2]">
+                                        <label for="input_valenties">Data da última dose:</label>
+                                        <input type="date" name="date_valenties" id="input_valenties" required>                                    
+                                    </div>
+                                </div>
+                            </div>                            
+                        </fieldset>
+                        <button type="submit" class="submit">Enviar</button>
+                    </fieldset>
+                </form>
+            </div>
+            <div id="edit_pet">
+                <form action="" method="post" id="form-pet" enctype="multipart/form-data">
+                    <fieldset>                      
+                        <legend>Dados do PET</legend>
+                        
+                        <div class="add-photo">
+                            <img src="" alt="" id="preview-pet" v-show="selected">
+                            <input type="file" name="" id="select-file" accept=".png, .jpg" @change="selectedFile" hidden>
+                            <label for="select-file" :class="{ 'selected': selected, 'unselected': !selected }">Selecionar Foto +</label>
+                        </div>
                         <div class="flex">
                             <div class="input-block name-pet">
                                 <label for="name">Nome:</label>
@@ -181,7 +332,7 @@
                                 </div>
                             </div>                            
                         </fieldset>
-                        <button type="submit" form="form-data">Enviar</button>
+                        <button type="submit" class="submit">Enviar</button>
                     </fieldset>
                 </form>
             </div>
@@ -200,6 +351,7 @@ export default {
             vacination_check: [],
             directionForm: true,
             have_medal_check: false,
+            selected : false,
             logOut : {
                 value : 'Sair',
                 route: '/'
@@ -218,16 +370,16 @@ export default {
             },
             objeto : {
                     check: true,
-                    image:'https://conteudo.imguol.com.br/c/entretenimento/54/2020/04/28/cachorro-pug-1588098472110_v2_450x337.jpg" alt="cachorro',
-                    name : 'Guvo',
-                    age : '10',
-                    specie : 'Cachorro',
-                    nextVac : 'Anti Rabica - 20/03/21',
-                    id : '$gW55#h0K4ç8.Xof80+a',
-                    responsible : 'Augusto César Filho',
-                    address : 'Rua Quintino Veiga, 852',
-                    complement : 'Altos',
-                    lastLoc : "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d510555.88086461107!2d-48.60194212167592!3d-1.345755896513534!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x66936bb845ca05f4!2sPdg%20mirai%20offices%20-%20Rua%20Municipalidade%20-%20Reduto%2C%20Bel%C3%A9m%20-%20PA!5e0!3m2!1spt-BR!2sbr!4v1601405619400!5m2!1spt-BR!2sbr"
+                    image:'',
+                    name : '',
+                    age : '',
+                    specie : '',
+                    nextVac : '',
+                    id : '',
+                    responsible : '',
+                    address : '',
+                    complement : '',
+                    lastLoc : ""
                 },
             pets : [
                 {
@@ -301,7 +453,25 @@ export default {
             
             from.style.display = 'none'
             to.style.display = 'block'
-        }
+        },
+        selectedFile(event){
+            try {
+                this.objeto.image = event.target.files[0]
+               try {
+                    const previewPet = document.querySelector('#preview-pet')
+                    const reader = new FileReader()
+                    const fileUpload = this.objeto.image
+                    this.selected = true
+                    reader.onload = event => previewPet.src = event.target.result
+                    reader.readAsDataURL(fileUpload)
+               } catch (error) {
+                   console.error(error);
+               }
+            } catch (error) {
+                console.error(error);
+            }
+            
+        },
     }
 
 }
@@ -313,6 +483,7 @@ export default {
         width: 100%;
         background: rgb(231, 138, 250);
         height: 100%;
+        
     }
     #container{
         margin: auto;
@@ -384,7 +555,7 @@ export default {
         width: 2rem;
         height: 2rem;
     }
-    #home .btn-add{
+    .btn-add{
         display: block;
         border: .2rem solid;
         width: 50%;
@@ -396,11 +567,11 @@ export default {
 
         transition: all 400ms;
     }
-    #home .btn-add:hover{
+    .btn-add:hover{
         background: #d6027e;
         color: white;
     }
-    #home .btn-add span{
+    .btn-add span{
         color: rgb(0, 177, 0);
         margin-right: 1rem;
         padding: 1rem 2rem;
@@ -581,9 +752,48 @@ export default {
         border-bottom: .3rem solid;
         margin-bottom: 2rem;
     }
+    #add_pet .add-photo{
+        display: block;
+        width: 100%;
+        margin-bottom: 4rem;
+    }
+    #add_pet .add-photo .unselected{
+        width: 100%;
+        display: flex;
+        border: .3rem solid  #d6027e;
+        border-bottom: .5rem solid  #d6027e;
+        border-radius: 1rem;
+        padding: 0rem;
+        height: 30rem;
+        justify-content: center;
+        align-items: center;
+        color: rgb(40, 224, 24);
+        cursor: pointer;
+    }
+    #add_pet .add-photo .selected{
+        height: 7rem;
+        width: 100%;
+        display: flex;
+        border: .2rem solid  #d6027e;
+        border-bottom: .5rem solid  #d6027e;
+        border-radius: 1rem;
+        padding: 0rem;
+        justify-content: center;
+        align-items: center;
+        color: rgb(40, 224, 24);
+        cursor: pointer;
+    }
+    .add-photo #preview-pet{
+        border: .3rem solid  #d6027e;
+        border-bottom: .5rem solid  #d6027e;
+        padding: .5rem;
+        border-radius: 1rem;
+        width: 100%;
+    }
     #add_pet #form-pet .input-block{
         color: #d6027e;
-        height: 10rem;
+        height: 100%;
+        margin: 2rem 0;
                 
     }
     #form-pet .flex .input-block{
@@ -650,11 +860,12 @@ export default {
         transition: all 500ms;
         color: rgb(255, 0, 64);
         border-bottom: .3rem solid #d6027e;
-       
     }
     .input-block input:valid,
     .input-block input:focus,
-    .select-block select:focus{
+    .select-block select:focus,
+    .subinput-block input:focus,
+    .subinput-block input:valid{
         background-color: #fc6ec1;
         height: 6rem;
         color: black;
@@ -663,8 +874,141 @@ export default {
         padding: 1rem;
         
     }
+    #add_pet .submit{
+        width: 100%;
+        display: block;
+        height: 7rem;
+        background: rgb(255, 1, 56);
+        border-radius: 1rem;
+        font-size: 3rem;
+        margin: 3rem 0;
+        color: white;
+    }
 
-    
+    #edit_pet{
+        display: none;
+    }
+    @media (min-width: 800px) {
+        #add_pet{
+            padding: 0;
+            margin: 0;
+            padding-top: 90px;
+        }
+        #add_pet #form-pet legend{
+            font-size: 45px;
+            border-bottom: 2px solid;
+        }
+        #form-pet .add-photo{
+            width: 50%;
+            position: relative;
+            display: flex;
+            align-items: center;            
+        }
+        #form-pet .add-photo .unselected{
+            height: 300px;
+            width: 100%;
+            font-size: 30px;
+            transition: all 400ms;
+        }
+        #form-pet .add-photo .selected{
+            position: absolute;
+            display: flex;
+            top: 0;
+            transition: all 400ms;
+            height: 100%;
+            width: 100%;
+            font-size: 20px;
+            opacity: 0;
+        }
+        #form-pet .add-photo .selected:hover{
+            opacity: 1;
+            background: black;
+        }
+        #form-pet .add-photo .unselected:hover,
+        #form-pet .add-photo .selected:hover{
+            background: rgba(255, 0, 98, 0.39);
+            color: white;
+        }
+        #form-pet .add-photo #preview-pet,
+        #form-pet .add-photo .unselected,
+        #form-pet .add-photo .selected{
+            border: 2px solid #d6027e;
+            border-bottom: 4px solid#d6027e;
+        }
+        #form-pet .flex{
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            gap: 50px;
+        }
+        #add_pet .flex{
+            margin: 10px 0;
+        }
+        #add_pet #form-pet .input-block{
+            width: 100%;
+            font-size: 25px;
+            height: 100%;
+            margin: 10px;
+        }
+        #add_pet .input-block,
+        #add_pet .subinput-block{
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+        #add_pet .input-block input,
+        #add_pet .subinput-block input{
+            height: 20px;
+            padding: 12px 0;
+            display: block;
+            font-size: 20px;
+            border-bottom: 2px solid #d6027e;
+        }
+        #add_pet #form-pet .input-block input:focus,
+        #add_pet #form-pet .input-block input:valid,
+        #add_pet #form-pet .subinput-block input:focus,
+        #add_pet #form-pet .subinput-block input:valid{
+            height: 50px;
+            border-radius: 10px;
+            padding: 0 10px;
+        }
+        .input-block [type="checkbox"]{
+            width: 15px;
+        }
+        input::-webkit-inner-spin-button,
+        input::-webkit-outer-spin-button{
+            display: none;
+        }
+        #form-pet .checkbox-house, 
+        #form-pet [type=checkbox],
+        #form-pet .checkbox-medal{
+            display: grid;
+            grid-template-columns: 2% 1fr;
+            align-items: center;
+            height: 5px;
+            gap: 0;
+            box-shadow: none;
+        }
+        #form-pet .select-block{
+            font-size: 25px;
+        }
+        #form-pet .select-block select{
+            height: 50px;
+            font-size: 20px;
+            margin-bottom: 0;
+        }
+        #form-pet .submit{
+            margin: 10px 0;
+            width: 50%;
+            height: 70px;
+            font-size: 30px;
+            transition: all 400ms;
+        }
+        #form-pet .submit:hover{
+            background: rgb(228, 4, 53);
+            transform: scale(1.01);
+            box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.425) ;
+        }
+    }
     /* ==============================MY PROFILE=================================== */
     
 </style>
