@@ -7,9 +7,9 @@
            
                 <ul class="menu" id="menu">
                     <li class="menu-item"><router-link :to="slot1.route"><div>{{slot1.value}}</div></router-link></li>
-                    <li class="menu-item"><a :href="slot2.route"><div>{{slot2.value}}</div></a></li>
-                    <li class="menu-item"><a :href="slot3.route"><div>{{slot3.value}}</div></a></li>
-                    <li class="menu-item"><a :href="slot4.route"><div>{{slot4.value}}</div></a></li>
+                    <li class="menu-item"><a :href="slot2.route" @click="changePager(slot2.route)"><div>{{slot2.value}}</div></a></li>
+                    <li class="menu-item"><a :href="slot3.route" @click="changePager(slot3.route)"><div>{{slot3.value}}</div></a></li>
+                    <li class="menu-item"><a :href="slot4.route" @click="changePager(slot4.route)"><div>{{slot4.value}}</div></a></li>
                 </ul>                         
         </nav>    
     </div>
@@ -22,6 +22,15 @@ export default {
         slot2 : Object,
         slot3 : Object,
         slot4 : Object
+    },
+    methods:{
+        changePager(routy){
+            try {
+                this.$emit('changepa',routy)
+            } catch (error) {
+                console.error(error);
+            } 
+        }
     }
 }
 </script>
@@ -55,7 +64,7 @@ export default {
         display: none;
     }
     .menu-block{
-        z-index: 7;
+        z-index: 12;
         width: 100%;
         height: 8rem;
         background-color: #9b09d4;
@@ -73,7 +82,7 @@ export default {
     }
     
     .menu{
-        z-index: 5;
+        z-index: 15;
         position: absolute;
         margin: 0;
         padding-top: 8rem;

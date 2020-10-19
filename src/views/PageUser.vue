@@ -1,20 +1,21 @@
 <template>
     <div id="page-user">
         <header>
-            <TopBarMenu :slot2="myData" :slot4="scheduleVac" :slot3="missingPet" :slot1="logOut"/>
+            <TopBarMenu :slot2="myData" :slot4="scheduleVac" :slot3="missingPet" :slot1="logOut" @changepa="menuOptions"/>
         </header>
         <div id="container">
-            <div id="home">
+            <div id="home" class="page">
                 <header>
-                    <h1>Meus Pets</h1>                    
-                    <div class="input-block" v-for="(item,index) in pets" :key="item.id">
-                        <input type="radio" name="pet" :id="index" class="input-radio" @click="changePet" checked>
-                        <label :for="index">{{item.name}}</label>
-                    </div>
-                    <a href="#add_pet" class="btn-add" @click="changePage('#home','#add_pet')"><span></span>Adicionar pet</a>
+                    <h1>Meus Pets</h1> 
+                    <div class="grid-header">
+                        <div class="input-block" v-for="(item,index) in pets" :key="item.id">
+                            <input type="radio" name="pet" :id="index" class="input-radio" @click="changePet" checked>
+                            <label :for="index">{{item.name}}</label>
+                        </div>
+                        <a href="#add_pet" class="btn-add" @click="changePage('#home','#add_pet')"><span></span>Adicionar pet</a>
+                    </div>                   
+                    
                 </header>
-                
-                
                 <div class="view-pet" v-for="pet in pets" :key="pet.id">
                     <ul class="list-data-pet" v-if="pet.check">
                         <img :src="pet.image" class="img-item" v-if="pet.image != ''">
@@ -28,7 +29,7 @@
                             <li class="list-item" name="responsible" id="responsible">Responsavel: {{pet.responsible}}</li>
                             <li class="list-item" name="address" id="address">Endereço: {{pet.address}}</li>
                             <li class="list-item" name="complement" id="complement">Complemento: {{pet.complement}}</li>
-                            <li class="list-item" name="last-localization" id="last-localization">Ultima localização: <iframe :src="pet.lastLoc" width="250" height="200" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe></li>
+                            <li class="list-item" name="last-localization" id="last-localization">Ultima localização: <iframe :src="pet.lastLoc"></iframe></li>
                         </div>    
                     </ul>
                 </div>
@@ -39,15 +40,51 @@
                 </div>
                 
             </div>
-            <div id="my_profile">
-
+            <div id="my_profile" class="page">
+                <br><br><br><br><br>
+                <br>
+                <div>
+                    <a href="#home" @click="changePage('#add_pet','#home')" class="btn-back">Voltar</a>
+                </div>
+                <p>afadasdsdasdsdasdas</p>
+                <p>afadasdsdasdsdasdas</p>
+                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Minus voluptates debitis alias consequuntur. Doloremque cumque eaque dignissimos hic. Maxime cupiditate blanditiis aspernatur reiciendis asperiores a nihil ipsam atque esse rerum.</p>
+                <p>asa</p>
+                <p>afadasdsdasdsdasdas</p>
+                <p>afadasdsdasdsdasdas</p>
+                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Minus voluptates debitis alias consequuntur. Doloremque cumque eaque dignissimos hi. Maxime cupiditate blanditiis aspernatur reiciendis asperiores a nihil ipsam atque esse rerum.</p>
+                <p>asa</p>
+                <br><br><br><br><br>
+                <br>
+                <p>afadasdsdasdsdasdas</p>
+                <p>afadasdsdasdsdasdas</p>
+                                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Minus voluptates debitis alias consequuntur. Doloremque cumque eaque dignissimos hic. Maxime cupiditate blanditiis aspernatur reiciendis asperiores a nihil ipsam atque esse rerum.</p>
+                <p>asa</p>
+                <p>afadasdsdasdsdasdas</p>
+                <p>afadasdsdasdsdasdas</p>
+                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Minus voluptates debitis alias consequuntur. Doloremque cumque eaque dignissimos hic. Maxime cupiditate blanditiis aspernatur reiciendis asperiores a nihil ipsam atque esse rerum.</p>
+                <p>asa</p>
             </div>
-            <div id="valenties_">
-
+            <div id="vacination" class="page">
+            <br><br><br><br><br><br><br><br>
+            <div>
+                <a href="#home" @click="changePage('#add_pet','#home')" class="btn-back">Voltar</a>
             </div>
-            <div id="pet_data">
+                <p>area de vacimaaaaaaaaaaaa</p>
             </div>
-            <div id="add_pet">
+            <div id="missing_pet" class="page">
+                <br><br><br><br><br><br>
+                <p>missin pet</p>
+                <div>
+                    <a href="#home" @click="changePage('#add_pet','#home')" class="btn-back">Voltar</a>
+                </div>
+            </div>
+            <div id="pet_data" class="page">
+            </div>
+            <div id="add_pet" class="page">
+                <div>
+                    <a href="#home" @click="changePage('#add_pet','#home')" class="btn-back">Voltar</a>
+                </div>
                 <form action="" method="post" id="form-pet" enctype="multipart/form-data">
                     <fieldset>                      
                         <legend>Dados do PET</legend>
@@ -193,152 +230,7 @@
                     </fieldset>
                 </form>
             </div>
-            <div id="edit_pet">
-                <form action="" method="post" id="form-pet" enctype="multipart/form-data">
-                    <fieldset>                      
-                        <legend>Dados do PET</legend>
-                        
-                        <div class="add-photo">
-                            <img src="" alt="" id="preview-pet" v-show="selected">
-                            <input type="file" name="" id="select-file" accept=".png, .jpg" @change="selectedFile" hidden>
-                            <label for="select-file" :class="{ 'selected': selected, 'unselected': !selected }">Selecionar Foto +</label>
-                        </div>
-                        <div class="flex">
-                            <div class="input-block name-pet">
-                                <label for="name">Nome:</label>
-                                <input type="text" name="name_pet" id="name_pet" pattern="[A-Za-z]+" required>
-                            </div>
-                            <div class="input-block years">
-                                <label for="name">Nascimento:</label>
-                                <input type="date" name="years" id="years" required>
-                            </div>
-                        </div>
-                        <div class="input-block checkbox-medal">                            
-                            <input type="checkbox" name="chk_medal" id="chk_medal" v-model="have_medal_check">
-                            <label for="chk_medal">Já tenho uma medalha</label>
-                        </div>
-                        <div class="input-block medal" v-if="have_medal_check">
-                            <label for="address">Informe o ID da medalha:</label>
-                            <input type="text" name="id_pet" id="id_pet" required>
-                        </div>
-                        <div class="input-block checkbox-house">                            
-                            <input type="checkbox" name="chk_house" id="chk_house" checked v-model="check_address_pet">
-                            <label for="chk_house">O animal mora em minha residência</label>
-                        </div>
-                        <div class="input-block address" v-if="!check_address_pet">
-                            <label for="address">Endereço:</label>
-                            <input type="text" name="address_pet" id="address_pet" required>
-                        </div>
-                        <div class="input-block number_house_pet" v-if="!check_address_pet">
-                            <label for="cep_pet">Nº:</label>
-                            <input type="number" name="number_house_pet" id="number_house_pet" required>
-                        </div>
-                        <div class="input-block neighborhood" v-if="!check_address_pet">
-                            <label for="neighborhood_pet">Bairro:</label>
-                            <input type="text" name="neighborhood_pet" id="neighborhood_pet" required>
-                        </div>
-                        <div class="input-block cep_pet" v-if="!check_address_pet">
-                            <label for="cep_pet">CEP:</label>
-                            <input type="number" name="cep_pet" id="cep_pet" required>
-                        </div>
-                        
-                        <fieldset class="vacination_field">
-                            <legend>Vacinação</legend>
-                            <div class="select-block">
-                                <label for="species">Selecione a espécie do seu animal</label>
-                                <select name="species" id="species" required v-model="animal">
-                                    <option :value="null" disabled selected>--selecione uma opção--</option>
-                                    <option value="cat">Gato</option>
-                                    <option value="dog">Cachorro</option>
-                                </select>
-                            </div>
-                            <!-- ==========================CAT HTML BLOCK=========================== -->
-                            <div class="species_cat" v-if="(animal == 'cat')">
-
-                                <div class="input-vermifugation vermifugation_cat">
-                                    <div class="input-block">
-                                        <input type="checkbox" name="chk_vac_vermifug" id="chk_vac_vermifug_c" v-model="vacination_check[0]">
-                                        <label for="chk_vac_vermifug_c">Vermifugação</label>
-                                    </div>                                        
-                                    <div class="subinput-block" v-show="vacination_check[0]">
-                                        <label for="input_vermifug">Data da última dose:</label>
-                                        <input type="date" name="date_vermifug" id="input_vermifu_cg">                                    
-                                    </div>
-                                </div>
-
-                                <div class="input-antRab antRab_cat">
-                                    <div class="input-block">
-                                        <input type="checkbox" name="chk_vac_antRab" id="chk_vac_antRab_c" v-model="vacination_check[1]">
-                                        <label for="name">Anti-Rábica</label>                                    
-                                    
-                                    </div>
-                                    
-                                    <div class="subinput-block" v-show="vacination_check[1]">
-                                        <label for="input_antRab">Data da última dose:</label>
-                                        <input type="date" name="date_antRab" id="input_antRab_c">                                   
-                                    </div>                                    
-                                </div>
-
-                                <div class="input-valenties valenties_cats">
-                                    <div class="input-block">
-                                        <input type="checkbox" name="chk_vac_valenties" id="chk_vac_valenties_c" v-model="vacination_check[2]">
-                                        <label for="chk_vac_valenties_c">V3, V4 ou V5</label>
-                                    
-                                    </div>
-                                    
-                                    <div class="subinput-block" v-show="vacination_check[2]">
-                                        <label for="input_valenties">Data da última dose:</label>
-                                        <input type="date" name="date_valenties" id="input_valenties_c">                                    
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- ==========================DOG HTML BLOCK=========================== -->
-                            <div class="species_dog" v-else>
-
-                                <div class="input-vermifugation vermifugation_dog">
-                                    <div class="input-block">
-                                        <input type="checkbox" name="chk_vac_vermifug" id="chk_vac_vermifug" v-model="vacination_check[0]" >
-                                        <label for="chk_vac_vermifug">Vermifugação</label>
-                                    
-                                    </div>
-                                    
-                                    <div class="subinput-block" v-show="vacination_check[0]">
-                                        <label for="input_vermifug">Data da última dose:</label>
-                                        <input type="date" name="date_vermifug" id="input_vermifug">                                    
-                                    </div>
-                                </div>
-
-                                <div class="input-antRab antRab_dog">
-                                    <div class="input-block">
-                                        <input type="checkbox" name="chk_vac_antRab" id="chk_vac_antRab" v-model="vacination_check[1]">
-                                        <label for="chk_vac_antRab">Anti-Rábica</label>
-                                    
-                                    </div>
-                                    
-                                    <div class="subinput-block" v-show="vacination_check[1]">
-                                        <label for="input_antRab">Data da última dose:</label>
-                                        <input type="date" name="date_antRab" id="input_antRab">                                   
-                                    </div>                                    
-                                </div>
-
-                                <div class="input-valenties valenties_dog">
-                                    <div class="input-block">
-                                        <input type="checkbox" name="chk_vac_antRab" id="chk_vac_valenties" v-model="vacination_check[2]">
-                                        <label for="chk_vac_valenties">V8 ou V10</label>
-                                    
-                                    </div>
-                                    
-                                    <div class="subinput-block" v-show="vacination_check[2]">
-                                        <label for="input_valenties">Data da última dose:</label>
-                                        <input type="date" name="date_valenties" id="input_valenties">                                    
-                                    </div>
-                                </div>
-                            </div>                            
-                        </fieldset>
-                        <button type="submit" class="submit">Enviar</button>
-                    </fieldset>
-                </form>
-            </div>
+           
         </div>
     </div> 
        
@@ -347,6 +239,7 @@
 import TopBarMenu from '../components/TopBarMenu.vue'
 import Buttons from '../components/Buttons.vue'
 export default {
+   
     data(){
         return{
             animal: String,
@@ -357,11 +250,11 @@ export default {
             selected : false,
             logOut : {
                 value : 'Sair',
-                route: '/'
+                route: '/',
             },
             myData : {
                 value : 'Meu Perfil',
-                route : '#my_profile'
+                route : '#my_profile',
             },
             missingPet : {
                 value : 'Seu PET sumiu?',
@@ -423,9 +316,48 @@ export default {
                     address : 'Rua Quintino Veiga, 852',
                     complement : 'Altos',
                     lastLoc : "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d510555.88086461107!2d-48.60194212167592!3d-1.345755896513534!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x66936bb845ca05f4!2sPdg%20mirai%20offices%20-%20Rua%20Municipalidade%20-%20Reduto%2C%20Bel%C3%A9m%20-%20PA!5e0!3m2!1spt-BR!2sbr!4v1601405619400!5m2!1spt-BR!2sbr"
+                },   
+                {
+                    check: false,
+                    image:'https://conteudo.imguol.com.br/c/entretenimento/54/2020/04/28/cachorro-pug-1588098472110_v2_450x337.jpg" alt="cachorro',
+                    name : 'Bombadier Sanat',
+                    age : '10',
+                    specie : 'Cachorro',
+                    nextVac : 'Anti Rabica - 20/03/21',
+                    id : '$gW55#h0K4ç8.Xof80+a',
+                    responsible : 'Augusto César Filho',
+                    address : 'Rua Quintino Veiga, 852',
+                    complement : 'Altos',
+                    lastLoc : "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d510555.88086461107!2d-48.60194212167592!3d-1.345755896513534!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x66936bb845ca05f4!2sPdg%20mirai%20offices%20-%20Rua%20Municipalidade%20-%20Reduto%2C%20Bel%C3%A9m%20-%20PA!5e0!3m2!1spt-BR!2sbr!4v1601405619400!5m2!1spt-BR!2sbr"
                 },
+                {
+                    check : false,
+                    image : 'https://static1.patasdacasa.com.br/articles/7/44/7/@/1498-algumas-racas-de-cachorro-sao-mais-indep-opengraph_1200-1.jpg',
+                    name : 'Gusatavo',
+                    age : '10',
+                    specie : 'Cachorro',
+                    nextVac : 'Anti Rabica - 20/03/21',
+                    id : '$gW55#h0K4ç8.Xof80+a',
+                    responsible : 'Augusto César Filho',
+                    address : 'Rua Quintino Veiga, 852',
+                    complement : 'Altos',
+                    lastLoc : "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d510555.88086461107!2d-48.60194212167592!3d-1.345755896513534!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x66936bb845ca05f4!2sPdg%20mirai%20offices%20-%20Rua%20Municipalidade%20-%20Reduto%2C%20Bel%C3%A9m%20-%20PA!5e0!3m2!1spt-BR!2sbr!4v1601405619400!5m2!1spt-BR!2sbr"
+                },
+                {
+                    check: false,
+                    image:'https://s2.glbimg.com/slaVZgTF5Nz8RWqGrHRJf0H1PMQ=/0x0:800x450/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2019/U/e/NTegqdSe6SoBAoQDjKZA/cachorro.jpg',
+                    name : 'Whinderasson',
+                    age : '10',
+                    specie : 'Cachorro',
+                    nextVac : 'Anti Rabica - 20/03/21',
+                    id : '$gW55#h0K4ç8.Xof80+a',
+                    responsible : 'Augusto César Filho',
+                    address : 'Rua Quintino Veiga, 852',
+                    complement : 'Altos',
+                    lastLoc : "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d510555.88086461107!2d-48.60194212167592!3d-1.345755896513534!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x66936bb845ca05f4!2sPdg%20mirai%20offices%20-%20Rua%20Municipalidade%20-%20Reduto%2C%20Bel%C3%A9m%20-%20PA!5e0!3m2!1spt-BR!2sbr!4v1601405619400!5m2!1spt-BR!2sbr"
+                },
+            
             ] 
-
         }
     },
     components:{
@@ -433,6 +365,14 @@ export default {
         Buttons
     },
     methods : {
+        menuOptions($route){
+            var all  = document.querySelectorAll('.page')
+            
+            for(let i = 0; i < all.length; i++){
+                all[i].style.display = 'none'
+            }
+            this.changePage('', $route)
+        },
         changePet(){
             var pet = document.querySelectorAll('.input-radio')
             
@@ -447,15 +387,20 @@ export default {
                 }
             }           
         },
-        addPet(){
-            
-        },
         changePage(pageFrom, pageTo){
-            var from = document.querySelector(pageFrom)
-            var to = document.querySelector(pageTo)
+            if(pageTo.length > 0){
+                var to = document.querySelector(pageTo)
+                to.style.display = 'block'               
+            }
+            if(pageFrom.length > 0){
+                var from = document.querySelector(pageFrom)
+                from.style.display = 'none'
+            }
             
-            from.style.display = 'none'
-            to.style.display = 'block'
+            
+            
+            
+            
         },
         selectedFile(event){
             try {
@@ -486,7 +431,6 @@ export default {
         width: 100%;
         background: rgb(231, 138, 250);
         height: 100%;
-        
     }
     #container{
         margin: auto;
@@ -496,16 +440,50 @@ export default {
         height: 100%;
         box-shadow: 0rem 0rem 2rem rgba(0, 0, 0, 0.37);
     }
+    .page{
+        display: none;
+    }
+    .btn-back{
+        color: #5e02d6;
+        font-size: 4rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        margin-bottom: 2rem;
+        border: .3rem solid;
+        padding: 2.5rem;
+        
+        width: 100%;
+        height: 5rem;
+        border-radius: 1rem;
+        transition: all 300ms;
+    }
+    .btn-back:hover{
+        background: #5e02d6;
+        color: white;
+        border-color: #5e02d6;
+    }
+    @media (min-width: 800px) {
+        .btn-back{  
+            font-size: 20px;
+            border: 2px solid;
+            padding: 2px;
+            width: 70px;
+            height: 40px;
+            border-radius: 10px;
+        }
+    }
     /* ===========================HOME=========================== */
     #home{
-        z-index: 5;
         font-size: 3rem;
         padding-top: 25rem;
+        padding-bottom: 0;
         margin: 0;
         position: relative;
         top: -15rem;
+        display: block;
         height: 100%;
-        display: none;
     }
     #home header h1{
         border-bottom: .4rem solid;
@@ -582,7 +560,6 @@ export default {
         background-size: 100% 70%; 
     }
     #home iframe{
-        z-index: 1;
         width: 100%;
         height: 50rem;
         margin-top: 2rem;
@@ -644,16 +621,27 @@ export default {
     #home .list-data-pet img{
         width: 100%;
     }
+    #home .view-pet .list-data-pet{
+        margin-bottom: 5rem
+    }
     @media(min-width: 800px){
         #home{
             padding: 0;
             padding-top: 350px;
-            height: 330vh;
+            height: 350vh;            
         }
         #home header h1{
             font-size: 100%;
             border-bottom: 2px solid;
         }        
+        #home .grid-header{
+            display: grid;
+            grid-template-columns: repeat(5,1fr);
+            padding: 20px 0;
+        }
+        #home .grid-header .input-block label{
+            margin: 10px 0;
+        }
         #home .input-block label{
             font-size: 20px;
             min-width: 200px;
@@ -676,14 +664,17 @@ export default {
             border: 5px solid white;
         }
         #home .btn-add{
-            width: 200px;
-            height: 60px;
+            width: 92.5%;
+            height: 50px;
             display: flex;
             align-items: center;
+            align-self: center;
             font-size: 20px;
-            padding: 0;
-            padding-top: 2px;
-            padding-left: 10px;
+            height: 50px;
+            border: none;
+            margin: 0;
+            padding: 0 8px;
+            box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.082);
         }
         #home .btn-add span{
             display: block;
@@ -692,9 +683,13 @@ export default {
             background-position: left;
             background-size: 100% 80%;
         }
+        .btn-add:hover{
+            background: #d6027e;
+            color: white;
+            border-color: #d6027e;
+        }
         #home .list-item-block #last-localization{
             position: absolute;
-            z-index: 12;
             display: block;
             left: 0;
             width: 100%;
@@ -742,7 +737,7 @@ export default {
     }
     /* ================================ADD PET==================================== */
     #add_pet{
-        display: block;
+        display: none;
         min-height: 106rem;
         padding-top: 10rem;
         font-size: 3rem;
