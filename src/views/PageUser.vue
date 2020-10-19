@@ -42,6 +42,9 @@
             <div id="my_profile">
 
             </div>
+            <div id="valenties_">
+
+            </div>
             <div id="pet_data">
             </div>
             <div id="add_pet">
