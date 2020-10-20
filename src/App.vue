@@ -20,7 +20,8 @@
     height: 100vh;
     /* overflow: hidden; */
   }
-  #form-user{
-    overflow: hidden;
+  input::-webkit-inner-spin-button,
+  input::-webkit-outer-spin-button{
+        display: none;
   }
 </style>

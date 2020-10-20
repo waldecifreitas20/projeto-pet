@@ -41,29 +41,54 @@
                 
             </div>
             <div id="my_profile" class="page">
-                <br><br><br><br><br>
-                <br>
                 <div>
                     <a href="#home" @click="changePage('#add_pet','#home')" class="btn-back">Voltar</a>
                 </div>
-                <p>afadasdsdasdsdasdas</p>
-                <p>afadasdsdasdsdasdas</p>
-                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Minus voluptates debitis alias consequuntur. Doloremque cumque eaque dignissimos hic. Maxime cupiditate blanditiis aspernatur reiciendis asperiores a nihil ipsam atque esse rerum.</p>
-                <p>asa</p>
-                <p>afadasdsdasdsdasdas</p>
-                <p>afadasdsdasdsdasdas</p>
-                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Minus voluptates debitis alias consequuntur. Doloremque cumque eaque dignissimos hi. Maxime cupiditate blanditiis aspernatur reiciendis asperiores a nihil ipsam atque esse rerum.</p>
-                <p>asa</p>
-                <br><br><br><br><br>
-                <br>
-                <p>afadasdsdasdsdasdas</p>
-                <p>afadasdsdasdsdasdas</p>
-                                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Minus voluptates debitis alias consequuntur. Doloremque cumque eaque dignissimos hic. Maxime cupiditate blanditiis aspernatur reiciendis asperiores a nihil ipsam atque esse rerum.</p>
-                <p>asa</p>
-                <p>afadasdsdasdsdasdas</p>
-                <p>afadasdsdasdsdasdas</p>
-                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Minus voluptates debitis alias consequuntur. Doloremque cumque eaque dignissimos hic. Maxime cupiditate blanditiis aspernatur reiciendis asperiores a nihil ipsam atque esse rerum.</p>
-                <p>asa</p>
+                <form action="www.google.com" method="POST" id="form-user">
+                    <fieldset>
+                        <legend>Seus dados</legend>
+                        
+                        <div class="input-block name">
+                            <label for="name">Nome:</label>
+                            <input type="text" name="name" id="name" required pattern="^[a-zA-Z][a-zA-Z-_\.]{1,20}$" placeholder="Nome Completo" v-model="userData.name">
+                        </div>
+                        <div class="input-block email">
+                            <label for="email">E-mail:</label>
+                            <input type="email" name="email" id="email" required placeholder="ex: carlos@augusto.com" v-model="userData.email">
+                        </div>
+                        <div class="flex">
+                                <div class="input-block address">
+                                <label for="address">Endereço:</label>
+                                <input type="text" name="address" id="address" required placeholder="Rua,Tv, Av, Alameda,..." v-model="userData.address">
+                            </div>
+                            <div class="input-block complement">
+                                <label for="address">Complemento:</label>
+                                <input type="text" name="complement" id="complement" required placeholder="ex: Condomínio, apto, cohab..." v-model="userData.complement">
+                            </div>
+                            <div class="input-block number">
+                                <label for="number">Nº:</label>
+                                <input type="number" name="number" id="number" required pattern="[0-9]{3}" placeholder="XXX" v-model="userData.number">
+                            </div>
+                            <div class="input-block neighborhood">
+                                <label for="neighborhood">Bairro</label>
+                                <input type="text" name="neighborhood" id="neigh" required pattern="[A-Za-z1-9]+" placeholder="Conceição" v-model="userData.neighborhood">
+                            </div> 
+                            <div class="input-block cep">
+                                <label for="cep">CEP</label>
+                                <input type="text" name="cep" id="cep" required pattern="[0-9]{8}" placeholder="XXXXXXXX" v-model="userData.cep">
+                            </div>
+                            <div class="input-block tel">
+                                <label for="tel">Telefone:</label>
+                                <input type="text" name="tel" id="tel" required pattern="[/(][0-9]{2}[/)][0-9]{9}" placeholder="(XX) XXXXX-XXXX" v-model="userData.tel">
+                            </div>     
+                        </div> 
+                        <div class="input-block password">
+                            <label for="password">Senha:</label>
+                            <input type="password" name="password" id="password" required placeholder="Digite uma senha" @keyup="onChangePassword" v-model="userData.comparePassword">
+                        </div>          
+                    </fieldset>
+                </form>
+                <button type="submit" :class="{'actived': clickable, 'desactived': !clickable }" id="btn-submit" @click="validPassword()" disabled>Salvar</button>
             </div>
             <div id="vacination" class="page">
             <br><br><br><br><br><br><br><br>
@@ -80,6 +105,7 @@
                 </div>
             </div>
             <div id="pet_data" class="page">
+
             </div>
             <div id="add_pet" class="page">
                 <div>
@@ -239,8 +265,17 @@
 import TopBarMenu from '../components/TopBarMenu.vue'
 import Buttons from '../components/Buttons.vue'
 export default {
-   
-    data(){
+    mounted : function(){
+        var currentURL = location.href.toString()
+        if(currentURL.indexOf(this.myData.route) != -1){
+            this.menuOptions(this.myData.route)
+        }else if(currentURL.indexOf(this.missingPet.route) != -1){
+            this.menuOptions(this.missingPet.route)
+        }else if(currentURL.indexOf(this.scheduleVac.route) != -1){
+            this.menuOptions(this.scheduleVac.route)
+        }
+    },
+    data : function(){
         return{
             animal: String,
             check_address_pet:  true,
@@ -248,6 +283,7 @@ export default {
             directionForm: true,
             have_medal_check: false,
             selected : false,
+            clickable: false,
             logOut : {
                 value : 'Sair',
                 route: '/',
@@ -264,18 +300,30 @@ export default {
                 value : 'Vacinas',
                 route : '#vacination'
             },
+            userData : {
+                name : 'Junior',
+                email : 'juniosantos21@hotmail.com',
+                password : '123456789',
+                comparePassword: '',
+                address : 'Rua da Mata',
+                complement : 'Entre passagem nova e 6ª rua',
+                number : '744',
+                neighborhood : 'Marambaia',
+                cep : '66615420',
+                tel : '(91)996223591',
+            },
             objeto : {
-                    check: true,
-                    image:'',
-                    name : '',
-                    age : '',
-                    specie : '',
-                    nextVac : '',
-                    id : '',
-                    responsible : '',
-                    address : '',
-                    complement : '',
-                    lastLoc : ""
+                    check: false,
+                    image:'https://conteudo.imguol.com.br/c/entretenimento/54/2020/04/28/cachorro-pug-1588098472110_v2_450x337.jpg" alt="cachorro',
+                    name : 'Bombadier Sant',
+                    age : '10',
+                    specie : 'Cachorro',
+                    nextVac : 'Anti Rabica - 20/03/21',
+                    id : '$gW55#h0K4ç8.Xof80+a',
+                    responsible : 'Augusto César Filho',
+                    address : 'Rua Quintino Veiga, 852',
+                    complement : 'Altos',
+                    lastLoc : "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d510555.88086461107!2d-48.60194212167592!3d-1.345755896513534!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x66936bb845ca05f4!2sPdg%20mirai%20offices%20-%20Rua%20Municipalidade%20-%20Reduto%2C%20Bel%C3%A9m%20-%20PA!5e0!3m2!1spt-BR!2sbr!4v1601405619400!5m2!1spt-BR!2sbr"                
                 },
             pets : [
                 {
@@ -358,6 +406,7 @@ export default {
                 },
             
             ] 
+
         }
     },
     components:{
@@ -365,7 +414,7 @@ export default {
         Buttons
     },
     methods : {
-        menuOptions($route){
+        menuOptions($route) {
             var all  = document.querySelectorAll('.page')
             
             for(let i = 0; i < all.length; i++){
@@ -373,7 +422,27 @@ export default {
             }
             this.changePage('', $route)
         },
-        changePet(){
+        onChangePassword() {
+            var password = document.querySelector('#password')
+            var btn = document.querySelector('#btn-submit')
+            if(password.value.length > 7){
+                this.clickable = true
+                btn.disabled = false
+            }else{
+                this.clickable = false
+                btn.disabled = true
+            }            
+        },
+        validPassword() {
+            
+            /* if(this.userData.comparePassword != this.userData.password){
+                alert('Senha incorreta!')
+                let btn = document.querySelector('#btn-submit')
+                console.log(btn);
+                console.log($);
+            } */
+        },
+        changePet() {
             var pet = document.querySelectorAll('.input-radio')
             
             for(let i = 0; i < pet.length; i++){
@@ -387,7 +456,7 @@ export default {
                 }
             }           
         },
-        changePage(pageFrom, pageTo){
+        changePage(pageFrom, pageTo) {
             if(pageTo.length > 0){
                 var to = document.querySelector(pageTo)
                 to.style.display = 'block'               
@@ -402,26 +471,25 @@ export default {
             
             
         },
-        selectedFile(event){
+        selectedFile(event) {
             try {
                 this.objeto.image = event.target.files[0]
-               try {
+                try {
                     const previewPet = document.querySelector('#preview-pet')
                     const reader = new FileReader()
                     const fileUpload = this.objeto.image
                     this.selected = true
                     reader.onload = event => previewPet.src = event.target.result
                     reader.readAsDataURL(fileUpload)
-               } catch (error) {
+                } catch (error) {
                    console.error(error);
-               }
+                }
             } catch (error) {
                 console.error(error);
             }
             
         },
     }
-
 }
 </script>
 
@@ -639,8 +707,8 @@ export default {
             grid-template-columns: repeat(5,1fr);
             padding: 20px 0;
         }
-        #home .grid-header .input-block label{
-            margin: 10px 0;
+        #home .grid-header .input-block{
+            margin: 10px;
         }
         #home .input-block label{
             font-size: 20px;
@@ -709,8 +777,7 @@ export default {
             border-bottom: 4px solid rgba(184, 3, 255, 0.377);
         }
         #home .list-item-block{
-            display: block;
-            
+            display: block;  
         }
         #home .list-item{
             margin: 0;
@@ -738,11 +805,10 @@ export default {
     /* ================================ADD PET==================================== */
     #add_pet{
         display: none;
-        min-height: 106rem;
-        padding-top: 10rem;
+        padding: 10rem 0;
         font-size: 3rem;
     }
-    #add_pet #form-pet legend{
+    legend{
         display: block;
         width: 100%;
         font-size: 5rem;
@@ -788,12 +854,11 @@ export default {
         border-radius: 1rem;
         width: 100%;
     }
-    #add_pet #form-pet .input-block{
+    .input-block{
         color: #d6027e;
-        height: 100%;
         margin: 2rem 0;
-                
     }
+    
     #form-pet .flex .input-block{
         margin-bottom: 2rem;
     }
@@ -872,7 +937,9 @@ export default {
         padding: 1rem;
         
     }
-    #add_pet .submit{
+    .submit, 
+    .desactived,
+    .actived{
         width: 100%;
         display: block;
         height: 7rem;
@@ -891,8 +958,10 @@ export default {
             padding: 0;
             margin: 0;
             padding-top: 90px;
+            min-width: 100vh;
+
         }
-        #add_pet #form-pet legend{
+        legend{
             font-size: 45px;
             border-bottom: 2px solid;
         }
@@ -961,8 +1030,8 @@ export default {
             font-size: 20px;
             border-bottom: 2px solid #d6027e;
         }
-        #add_pet #form-pet .input-block input:focus,
-        #add_pet #form-pet .input-block input:valid,
+        .input-block input:focus,
+        .input-block input:valid,
         #add_pet #form-pet .subinput-block input:focus,
         #add_pet #form-pet .subinput-block input:valid{
             height: 50px;
@@ -996,8 +1065,8 @@ export default {
         }
         #form-pet .submit{
             margin: 10px 0;
-            width: 50%;
-            height: 70px;
+            width: 40%;
+            height: 60px;
             font-size: 30px;
             transition: all 400ms;
         }
@@ -1008,5 +1077,47 @@ export default {
         }
     }
     /* ==============================MY PROFILE=================================== */
+    #my_profile{
+        padding-top: 5rem;
+    }
+    #my_profile #form-user{
+        overflow: hidden;
+        position: sticky;
+        z-index: 8;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        top: 0rem;  
+        font-size: 3rem;              
+    }
+    #my_profile #form-user a{
+        display: block;
+        text-align: center;
+        margin: 1.8rem auto;
+        background: rgb(4, 247, 255);
+        padding: 2rem;
+        border-radius: 1rem;
+        color: rgb(104, 4, 235);
+        transition: all 300ms;
+        cursor: pointer;
+    }
+    #my_profile #form-user a:hover{
+        background: rgb(3, 196, 180);
+    }
+    #my_profile .password{
+        margin-top: 8rem;
+        border: .2rem solid;
+        padding: 2rem;
+        border-radius: 1rem;
+    }
+    #my_profile .desactived{
+        background: #ff004ca8;
+    }
+    #my_profile .actived{
+        background: #fa004b;
+    }
+    /* ==============================MISSING PET================================== */
+    /* ==============================VACINATION=================================== */
+    /* ==============================EDIT PET===================================== */
     
 </style>

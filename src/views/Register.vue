@@ -1,7 +1,7 @@
 <template>
     <div id="register-container">
         <main>
-            <form action="http://www.google.com" method="post" class="form-submit" id="form-data">
+            <form action="http://www.google.com" method="post" class="form-submit" id="form-data" enctype="multipart/form-data">
                 <div id="form-user">
                     <header>
                         <nav class="top_bar">
@@ -60,7 +60,7 @@
                         </div>
                                           
                     </fieldset>
-                <div id="btn_next"><a class="btn_prox" @click="validFormUser">Proximo</a></div>
+                    <div id="btn_next"><a class="btn_prox" @click="validFormUser">Proximo</a></div>
                 </div>
                 <div id="form-pet">  
                     <header>
@@ -223,9 +223,6 @@ export default {
         }
     },
     methods:{
-        isNumber(number){
-            return !isNaN(number)
-        },
         back(){
             var from = document.querySelector("#form-pet")
             var to = document.querySelector("#form-user")
@@ -390,10 +387,6 @@ export default {
         padding: 1rem 0;
         color: rgb(4, 255, 255);
         height: 10.6rem;
-    }
-    .input-block input::-webkit-inner-spin-button,
-    .input-block input::-webkit-outer-spin-button{
-        display: none;
     }
     .input-block input{
         display: flex;

@@ -25,6 +25,8 @@ export default {
     },
     methods:{
         changePager(routy){
+            let menu = document.querySelector('#check')
+            menu.checked = false
             try {
                 this.$emit('changepa',routy)
             } catch (error) {
@@ -49,14 +51,14 @@ export default {
     }
     
     #asset_menu{
-        z-index: 9;
+        z-index: 10;
         padding: .5rem;
         position: fixed;
         top: 2rem;
         left: 2rem;
     }
     #asset_menu:hover{
-        z-index: 8;
+        z-index: 10;
         border: 1px solid #a002e9;
         
     }
@@ -64,7 +66,7 @@ export default {
         display: none;
     }
     .menu-block{
-        z-index: 12;
+        z-index: 9;
         width: 100%;
         height: 8rem;
         background-color: #9b09d4;
@@ -82,7 +84,7 @@ export default {
     }
     
     .menu{
-        z-index: 15;
+        z-index: 5;
         position: absolute;
         margin: 0;
         padding-top: 8rem;
