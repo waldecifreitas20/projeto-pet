@@ -49,7 +49,9 @@ export default {
         list-style: none;
         text-decoration: none;
     }
-    
+    .top_bar_menu{
+        height: 9%;
+    }
     #asset_menu{
         z-index: 10;
         padding: .5rem;
@@ -109,7 +111,6 @@ export default {
     
     .menu .menu-item,
     .menu .menu-item-un {
-        /* position: absolute; */
         display: list-item;
         color: white;        
         align-items: center;
@@ -158,8 +159,7 @@ export default {
             background-color: #9b09d4;
             position: fixed;
             margin: 0;
-            text-align: initial;
-            
+            text-align: initial;            
         }
         .menu{
             z-index: 5;
@@ -169,7 +169,8 @@ export default {
             background-color: #ba25ff00;
             margin-top: 0px ;
             top: 0;
-            left: 500px;
+            right: 0%;
+            left: auto;
             width: 70%;
             height: 70px; 
             box-shadow: none;

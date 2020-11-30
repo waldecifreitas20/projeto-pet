@@ -1,8 +1,8 @@
 <template>
     <div id="register-container">
         <main>
-            <form action="http://www.google.com" method="post" class="form-submit" id="form-data" enctype="multipart/form-data">
-                <div id="form-user">
+            <form action="" method="GET" class="form-submit" id="form-data" enctype="multipart/form-data">
+                <div id="user-form">
                     <header>
                         <nav class="top_bar">
                             <router-link to="/" id="routy">Voltar para o início</router-link>
@@ -13,308 +13,478 @@
                         
                         <div class="input-block name">
                             <label for="name">Nome:</label>
-                            <input type="text" name="name" id="name" required pattern="[a-z\s]+$" placeholder="Nome Completo">
+                            <input type="text" name="name" id="name" required pattern="^[^-\s][a-zA-ZÀ-ú ]*" placeholder="Nome Completo" v-model="dataUser.name">
                             <div class="error_tag error_name" id="error">Preencha esse campo</div>
                         </div>
                         <div class="input-block email">
                             <label for="email">E-mail:</label>
-                            <input type="email" name="email" id="email" required placeholder="ex: carlos@augusto.com">
+                            <input type="email" name="email" id="email" required placeholder="ex: carlos@augusto.com" v-model="dataUser.email">
                             <p class="error_tag error_email">Preencha esse campo</p>
                         </div>
-                        <div class="input-block password">
-                            <label for="password">Senha:</label>
-                            <input type="password" name="password" id="password" required placeholder="Digite uma senha">
-                            <p class="error_tag error_password">Preencha esse campo</p>
-                        </div>
+                        
                         <div class="flex">
-                                <div class="input-block address">
+                            <div class="input-block password">
+                            <label for="password">Senha:</label>
+                            <input type="password" name="password" id="password" @keyup="confirmPassword" required placeholder="Digite uma senha" v-model="dataUser.password">
+                            <p class="error_tag error_password">Sua senha deve conter pelo menos 8 caracteres</p>
+                        </div>
+                        <div class="input-block confirm_password">
+                            <label for="confirm_password">Confirme a senha:</label>
+                            <input type="password" name="confirm_password" id="confirm_password" required placeholder="Digite uma senha" @keyup="confirmPassword" v-model="dataUser.confirmPassword">
+                            <p class="error_tag error_confirm_password">As senhas não concidem</p>
+                        </div>
+                            <div class="input-block cep">
+                                <label for="cep">CEP</label>
+                                <input type="text" name="cep" id="cep" required pattern="[0-9]{8}" placeholder="XXXXXXXX" @keyup="checkCEP" v-model="dataUser.cep">
+                                <p class="error_tag error_cep">Informe um CEP válido</p>
+                            </div>
+                            <div class="input-block address">
                                 <label for="address">Endereço:</label>
-                                <input type="text" name="address" id="address" required placeholder="Rua,Tv, Av, Alameda,...">
-                                <p class="error_tag">Preencha esse campo</p>
-                            </div>
-                            <div class="input-block complement">
-                                <label for="address">Complemento:</label>
-                                <input type="text" name="complement" id="complement" required placeholder="ex: Condomínio, apto, cohab...">
-                                <p class="error_tag">Preencha esse campo</p>
-                            </div>
-                            <div class="input-block number">
-                                <label for="number">Nº:</label>
-                                <input type="number" name="number" id="number" required pattern="[0-9]{3}" placeholder="XXX">
+                                <input type="text" name="address" id="address" required placeholder="Rua,Tv, Av, Alameda,..." v-model="dataUser.address">
                                 <p class="error_tag">Preencha esse campo</p>
                             </div>
                             <div class="input-block neighborhood">
                                 <label for="neighborhood">Bairro</label>
-                                <input type="text" name="neighborhood" id="neigh" required pattern="[A-Za-z1-9]+" placeholder="Conceição">
+                                <input type="text" name="neighborhood" id="neigh" required pattern="[A-Za-z1-9]+" placeholder="Conceição" v-model="dataUser.neighborhood">
                                 <p class="error_tag">Preencha esse campo</p>
-                            </div> 
-                            <div class="input-block cep">
-                                <label for="cep">CEP</label>
-                                <input type="text" name="cep" id="cep" required pattern="[0-9]{8}" placeholder="XXXXXXXX">
-                                <p class="error_tag">Informe um CEP válido</p>
                             </div>
+                            <div class="input-block complement">
+                                <label for="address">Complemento:</label>
+                                <input type="text" name="complement" id="complement" required placeholder="ex: Condomínio, apto, cohab..." v-model="dataUser.complement">
+                                <p class="error_tag">Preencha esse campo</p>
+                            </div>
+                            <div class="input-block number">
+                                <label for="number">Nº:</label>
+                                <input type="number" name="number" id="number" required pattern="[0-9]{3}" placeholder="XXX" v-model="dataUser.number">
+                                <p class="error_tag">Preencha esse campo</p>
+                            </div>                    
                             <div class="input-block tel">
                                 <label for="tel">Telefone:</label>
-                                <input type="text" name="tel" id="tel" required pattern="[/(][0-9]{2}[/)][0-9]{9}" placeholder="(XX) XXXXX-XXXX">
+                                <input type="text" name="tel" id="tel" @keyup="formatTel" required pattern="[/(][0-9]{2}[/)][0-9]{5}[/-][0-9]{4}" placeholder="(XX) XXXXX-XXXX" v-model="dataUser.tel">
                                 <p class="error_tag">Número inválido</p>
                             </div>     
                         </div>
                                           
                     </fieldset>
-                    <div id="btn_next"><a class="btn_prox" @click="validFormUser">Proximo</a></div>
+                    <div id="btn_next"><a class="btn_prox" @click="validateUserForm">Proximo</a></div>
                 </div>
-                <div id="form-pet">  
+                <div id="pet-form">  
                     <header>
-                          <a href="#form-user" @click="back">Voltar</a>                        
+                          <a href="#user-form" @click="changePage('#pet-form','#user-form')">Voltar</a>                        
                     </header>
                     <fieldset>
                       
                         <legend>Dados do PET</legend>
                         
+                        <div class="add-photo">
+                            <img alt="" id="preview-pet" v-show="selected">
+                            <input type="file" name="" id="select-file" accept=".png, .jpg" @change="previewPhoto" hidden>
+                            <label for="select-file" :class="{'selected': selected, 'unselected': !selected }">Selecionar Foto +</label>
+                        </div>
+                        
                         <div class="flex">
                             <div class="input-block name-pet">
                                 <label for="name">Nome:</label>
-                                <input type="text" name="name_pet" id="name_pet" pattern="[A-Za-z]+" required>
+                                <input type="text" name="name_pet" id="name_pet" pattern="^[^-\s][a-zA-ZÀ-ú ]*" required v-model="dataPet.name">
                             </div>
-                            <div class="input-block years">
+                            <div class="input-block birth-pet">
                                 <label for="name">Nascimento:</label>
-                                <input type="date" name="years" id="years" required>
+                                <input type="date" name="birth-pet" id="birth-pet" required v-model="dataPet.birth">
                             </div>
                         </div>
                         <div class="input-block checkbox-medal">                            
-                            <input type="checkbox" name="chk_medal" id="chk_medal" v-model="have_medal_check">
+                            <input type="checkbox" name="chk_medal" id="chk_medal" v-model="dataPet.checkMedal">
                             <label for="chk_medal">Já tenho uma medalha</label>
                         </div>
-                        <div class="input-block medal" v-if="have_medal_check">
+                        <div class="input-block medal" v-if="dataPet.checkMedal">
                             <label for="address">Informe o ID da medalha:</label>
-                            <input type="text" name="id_pet" id="id_pet" required>
+                            <input type="text" name="id_pet" id="id_pet" required v-model="dataPet.id">
                         </div>
                         <div class="input-block checkbox-house">                            
-                            <input type="checkbox" name="chk_house" id="chk_house" checked v-model="check_address_pet">
+                            <input type="checkbox" name="chk_house" id="chk_house" checked v-model="dataPet.sameAddress">
                             <label for="chl_house">O animal mora em minha residência</label>
                         </div>
-                        <div class="input-block address" v-if="!check_address_pet">
-                            <label for="address">Endereço:</label>
-                            <input type="text" name="address_pet" id="address_pet" required>
-                        </div>
-                        <div class="input-block number_house_pet" v-if="!check_address_pet">
-                            <label for="cep_pet">Nº:</label>
-                            <input type="number" name="number_house_pet" id="number_house_pet" required>
-                        </div>
-                        <div class="input-block neighborhood" v-if="!check_address_pet">
-                            <label for="neighborhood_pet">Bairro:</label>
-                            <input type="text" name="neighborhood_pet" id="neighborhood_pet" required>
-                        </div>
-                        <div class="input-block cep_pet" v-if="!check_address_pet">
-                            <label for="cep_pet">CEP:</label>
-                            <input type="number" name="cep_pet" id="cep_pet" required>
+                        <div class="other-address" v-if="!dataPet.sameAddress">
+                            <div class="input-block address">
+                                <label for="address">Endereço:</label>
+                                <input type="text" name="address_pet" id="address_pet" required v-model="dataPet.address">
+                            </div>
+                            <div class="input-block number_house_pet">
+                                <label for="cep_pet">Nº:</label>
+                                <input type="number" name="number_house_pet" id="number_house_pet" required v-model="dataPet.number">
+                            </div>
+                            <div class="input-block neighborhood">
+                                <label for="neighborhood_pet">Bairro:</label>
+                                <input type="text" name="neighborhood_pet" id="neighborhood_pet" required v-model="dataPet.neighborhood">
+                            </div>
+                            <div class="input-block cep_pet">
+                                <label for="cep_pet">CEP:</label>
+                                <input type="number" name="cep_pet" id="cep_pet" required v-model="dataPet.cep">
+                            </div>
                         </div>
                         <fieldset class="vacination_field">
                             <legend>Vacinação</legend>
                             <div class="select-block">
                                 <label for="species">Selecione a espécie do seu animal</label>
-                                <select name="species" id="species" required v-model="animal">
+                                <select name="species" id="species" required v-model="dataPet.specie">
                                     <option :value="null" disabled selected>--selecione uma opção--</option>
                                     <option value="cat">Gato</option>
                                     <option value="dog">Cachorro</option>
                                 </select>
                             </div>
                             <!-- ==========================CAT HTML BLOCK=========================== -->
-                            <div class="species_cat" v-if="(animal == 'cat')">
+                            <div class="species_cat" v-if="(dataPet.specie == 'cat')">
 
-                                <div class="input-vermifugation vermifugation_cat">
+                                <div class="input-deworming deworming_cat">
                                     <div class="input-block">
-                                        <input type="checkbox" name="chk_vac_vermifug" id="chk_vac_vermifug_c" v-model="vacination_check[0]">
+                                        <input type="checkbox" name="check-deworming" id="check-deworming_c" v-model="dataPet.vaccines.deworming.check">
                                         <label for="name">Vermifugação</label>
                                     </div>                                        
-                                    <div class="subinput-block" v-show="vacination_check[0]">
-                                        <label for="input_vermifug">Data da última dose:</label>
-                                        <input type="date" name="date_vermifug" id="input_vermifu_cg">                                    
+                                    <div class="subinput-block" v-show="dataPet.vaccines.deworming.check">
+                                        <label for="input_deworming">Data da última dose:</label>
+                                        <input type="date" name="date_deworming" id="input_vermifu_cg" v-model="dataPet.vaccines.deworming.lastDose">                                    
                                     </div>
                                 </div>
 
                                 <div class="input-antRab antRab_cat">
                                     <div class="input-block">
-                                        <input type="checkbox" name="chk_vac_antRab" id="chk_vac_antRab_c" v-model="vacination_check[1]">
-                                        <label for="name">Anti-Rábica</label>                                    
-                                    
-                                    </div>
-                                    
-                                    <div class="subinput-block" v-show="vacination_check[1]">
+                                        <input type="checkbox" name="check-antRab" id="check-antRab_c" v-model="dataPet.vaccines.antRab.check">
+                                        <label for="name">Anti-Rábica</label>                                                                        
+                                    </div>                                    
+                                    <div class="subinput-block" v-show="dataPet.vaccines.antRab.check">
                                         <label for="input_antRab">Data da última dose:</label>
-                                        <input type="date" name="date_antRab" id="input_antRab_c">                                   
+                                        <input type="date" name="date_antRab" id="input_antRab_c" v-model="dataPet.vaccines.antRab.lastDose">                                   
                                     </div>                                    
                                 </div>
 
                                 <div class="input-valenties valenties_cats">
                                     <div class="input-block">
-                                        <input type="checkbox" name="chk_vac_valenties" id="chk_vac_valenties_c" v-model="vacination_check[2]">
+                                        <input type="checkbox" name="check-valenties" id="check-valenties_c" v-model="dataPet.vaccines.valences.check">
                                         <label for="name">V3, V4 ou V5</label>
-                                    
-                                    </div>
-                                    
-                                    <div class="subinput-block" v-show="vacination_check[2]">
+                                    </div>                                    
+                                    <div class="subinput-block" v-show="dataPet.vaccines.valences.check">
                                         <label for="input_valenties">Data da última dose:</label>
-                                        <input type="date" name="date_valenties" id="input_valenties_c">                                    
+                                        <input type="date" name="date_valenties" id="input_valenties_c" v-model="dataPet.vaccines.valences.lastDose">                                    
                                     </div>
                                 </div>
+
                             </div>
                             <!-- ==========================DOG HTML BLOCK=========================== -->
                             <div class="species_dog" v-else>
 
-                                <div class="input-vermifugation vermifugation_dog">
+                                <div class="input-deworming deworming_dog">
                                     <div class="input-block">
-                                        <input type="checkbox" name="chk_vac_vermifug" id="chk_vac_vermifug" v-model="vacination_check[0]" >
-                                        <label for="name">Vermifugação</label>
-                                    
-                                    </div>
-                                    
-                                    <div class="subinput-block" v-show="vacination_check[0]">
-                                        <label for="input_vermifug">Data da última dose:</label>
-                                        <input type="date" name="date_vermifug" id="input_vermifug">                                    
+                                        <input type="checkbox" name="check-deworming" id="check-deworming" v-model="dataPet.vaccines.deworming.check" >
+                                        <label for="name">Vermifugação</label>                                    
+                                    </div>                                    
+                                    <div class="subinput-block" v-show="dataPet.vaccines.deworming.check">
+                                        <label for="input_deworming">Data da última dose:</label>
+                                        <input type="date" name="date_deworming" id="input_deworming" v-model="dataPet.vaccines.deworming.lastDose">                                    
                                     </div>
                                 </div>
 
                                 <div class="input-antRab antRab_dog">
                                     <div class="input-block">
-                                        <input type="checkbox" name="chk_vac_antRab" id="chk_vac_antRab" v-model="vacination_check[1]">
-                                        <label for="name">Anti-Rábica</label>
-                                    
-                                    </div>
-                                    
-                                    <div class="subinput-block" v-show="vacination_check[1]">
+                                        <input type="checkbox" name="check-antRab" id="check-antRab" v-model="dataPet.vaccines.antRab.check">
+                                        <label for="name">Anti-Rábica</label>                                    
+                                    </div>                                    
+                                    <div class="subinput-block" v-show="dataPet.vaccines.antRab.check">
                                         <label for="input_antRab">Data da última dose:</label>
-                                        <input type="date" name="date_antRab" id="input_antRab">                                   
+                                        <input type="date" name="date_antRab" id="input_antRab" v-model="dataPet.vaccines.antRab.lastDose">                                   
                                     </div>                                    
                                 </div>
 
                                 <div class="input-valenties valenties_dog">
                                     <div class="input-block">
-                                        <input type="checkbox" name="chk_vac_antRab" id="chk_vac_valenties" v-model="vacination_check[2]">
-                                        <label for="name">V8 ou V10</label>
-                                    
-                                    </div>
-                                    
-                                    <div class="subinput-block" v-show="vacination_check[2]">
+                                        <input type="checkbox" name="check-antRab" id="check-valenties" v-model="dataPet.vaccines.valences.check">
+                                        <label for="name">V8 ou V10</label>                                    
+                                    </div>                                    
+                                    <div class="subinput-block" v-show="dataPet.vaccines.valences.check">
                                         <label for="input_valenties">Data da última dose:</label>
-                                        <input type="date" name="date_valenties" id="input_valenties">                                    
+                                        <input type="date" name="date_valenties" id="input_valenties" v-model="dataPet.vaccines.valences.lastDose">                                    
                                     </div>
+
                                 </div>
                             </div>                            
                         </fieldset>
-                        <button type="submit" form="form-data">Enviar</button>
+                        
                     </fieldset>
                 </div>
                 
             </form>
+            <button @click="submitImage">Enviar</button>
         </main>
     </div>
 </template>
 
 <script>
+import axios from 'axios';
 
 export default {
-    data(){
+    mounted : function() {
+        // Inicializa variáveis de localização do pet //
+        // Desativa Ctrl+v no <input> "confirmar senha" //
+        document.getElementById('confirm_password').onpaste = function() {
+            return false;
+        };
+        document.querySelector('#user-form').style.display = 'none';
+        document.querySelector('#pet-form').style.display = 'block';
+
+    },
+    updated() {
+        this.dataPet.address = this.dataUser.address;
+        this.dataPet.cep = this.dataUser.cep;
+        this.dataPet.number = this.dataUser.number;
+        this.dataPet.neighborhood = this.dataUser.neighborhood;
+        this.dataPet.complement = this.dataUser.complement;
+        console.log(this.dataPet.address);
+        this.formData = {
+            dataUser : this.dataUser,
+            dataPet : this.dataPet
+        }
+    },
+    data: function(){
         return{
-            animal: String,
-            check_address_pet:  true,
-            vacination_check: [],
-            directionForm: true,
-            have_medal_check: false,
+            selected : false, // Controle de CLasse
+            imagePreview: null, // Recebe image temporaria
+            formData : JSON,
+            dataUser : { // Dados do usuário
+                name : '',                              
+                email : '',
+                password : '',
+                confirmPassword : '', 
+                address :  '',
+                complement : '',
+                number : '',
+                neighborhood : '',
+                cep : '',         
+                tel : '',
+            },
+            dataPet : { // Dados do pet 
+                name : '',
+                birth: '',
+                checkMedal : false,
+                idMedal : '',
+                photo : null,
+                sameAddress: true,
+                specie: '',
+                address :  '',
+                complement : '',
+                number : '',
+                neighborhood : '',
+                cep : '',
+                lastLocation : '',    
+                vaccines : {
+                    antRab : {
+                        check : false,
+                        lastDose : ''
+                    },
+                    valences : {
+                        check : false,
+                        lastDose : '' 
+                    },
+                    deworming : {
+                        check : false,
+                        lastDose : '' 
+                    }
+                }
+            }
         }
     },
     methods:{
-        back(){
-            var from = document.querySelector("#form-pet")
-            var to = document.querySelector("#form-user")
-            from.setAttribute("style", "display: none")
-            to.setAttribute("style", "z-index: 5")
-        },
-        validFormUser(){
-            var error = document.querySelectorAll(".error_tag")            
-            var anchor = document.querySelector(".btn_prox")
-            
-            
-            var elements = {
-                name : { val : document.querySelector("#name")},          //0              
-                email : { val : document.querySelector("#email")},         //1
-                password : { val : document.querySelector("#password")},   //2
-                address : { val : document.querySelector("#address")},     //3
-                complement : {val : document.querySelector("#complement")},//4
-                number : { val : document.querySelector("#number")},       //5
-                neighborhood : { val : document.querySelector("#neigh")},  //6                
-                cep : { val : document.querySelector("#cep")},             //7
-                tel : { val : document.querySelector("#tel")},             //8    
-                  
-            }          
-            /* =================CLEAR ERROR-TAG ON CLICK=================== */
-            for(let i = 0 ; i < error.length; i++ ){
-                error[i].setAttribute("style","display: none")
+        changePage(from, to) { // Alterna as páginas a partir dos parâmetros definidos
+            if (from.length > 0) {
+                document.querySelector(from)
+                .style.display = 'none';
             }
-           ////////////////////////////////////////////////////////////////////
-            if(elements.name.val.value.length == 0){
-                error[0].setAttribute("style", "display: block")
-                error[0].focus()
+            if (to.length > 0) {
+                document.querySelector(to)
+                .style.display = 'block';
+            }            
+        },
+        validateUserForm() {   // Verifica se os dados do usuário estão aceitáveis
+            var error = document.querySelectorAll(".error_tag");            
+            var anchor = document.querySelector(".btn_prox");
+                  
+            /* =================CLEAN UP ERROR-TAG ON CLICK=================== */
+            for(let i = 0 ; i < error.length; i++ ){
+                error[i].setAttribute("style","display: none");
+            }
+           /* =============== CHECKING USER VARIABLES  ===================== */
+            if(this.dataUser.name.length == 0){
+                error[0].setAttribute("style", "display: block");
+                error[0].focus();
                 alert('Informe o seu nome!')
-            }else if(!isNaN(elements.name.val.value)){
-                error[0].setAttribute("style", "display: block")
-                error[0].focus()
+            }else if(!isNaN(this.dataUser.name)){
+                error[0].setAttribute("style", "display: block");
+                error[0].focus();
                 error[0].innerHTML = "Digite um nome válido"
-                elements.name.val.value = ""
+                this.dataUser.name = ""
                 alert('Seu nome não pode ser um número!')
-            }else if(elements.email.val.value.length == 0){
-                error[1].setAttribute("style", "display: block")
-                error[1].focus()
+            }else if(this.dataUser.email.length == 0){
+                error[1].setAttribute("style", "display: block");
+                error[1].focus();
                 alert('Informe um email válido!')
-            }else if(elements.email.val.value.indexOf('@') == -1 || elements.email.val.value.indexOf('.') == -1){
-                error[1].setAttribute("style", "display: block")
-                error[1].focus()
+            }else if(this.dataUser.email.indexOf('@') == -1 || this.dataUser.email.indexOf('.') == -1){
+                error[1].setAttribute("style", "display: block");
+                error[1].focus();
                 error[1].innerHTML = 'Informe um email válido'
-                elements.email.val.value = "" 
+                this.dataUser.email = "" 
                 alert('Informe um email válido!')         
-            }else if(elements.password.val.value.length < 8){
-                error[2].setAttribute("style", "display : block")
-                error[2].focus()
+            }else if(this.dataUser.password.length < 8){
+                error[2].setAttribute("style", "display : block");
+                error[2].focus();
                 error[2].innerHTML = 'Sua senha deve ter pelo menos 8 caracteres'
-                alert('Sua senha deve conter pelomenos 8 caracteres')
-            }else if(elements.address.val.value.length == 0){
-                error[3].setAttribute("style", "display: block")
-                error[3].focus()
+                alert('Sua senha deve conter pelo menos 8 caracteres')
+            }else if(this.dataUser.address.length == 0){
+                error[3].setAttribute("style", "display: block");
+                error[3].focus();
                 alert('Informe um endereço')
-            }else if(elements.complement.val.value.length == 0){
-                error[4].setAttribute("style", "display: block")
-                error[4].focus() 
+            }else if(this.dataUser.complement.length == 0){
+                error[4].setAttribute("style", "display: block");
+                error[4].focus(); 
                 alert('Informe um complemento. Exemplo: vila, altos, ponto de referência')           
-            }else if(elements.number.val.value.length == 0){
-                error[5].setAttribute("style", "display: block")
-                error[5].focus()
+            }else if(this.dataUser.number.length == 0){
+                error[5].setAttribute("style", "display: block");
+                error[5].focus();
                 alert('O numero da sua casa não pode estar vazio')
-            }else if(elements.number.val.value.length > 4){
-                error[5].setAttribute("style", "display: block")
-                error[5].focus()
+            }else if(this.dataUser.number.length > 4){
+                error[5].setAttribute("style", "display: block");
+                error[5].focus();
                 error[5].innerHTML = "Informe um valor válido"
-                elements.number.val.value = ""
-            }else if(elements.neighborhood.val.value.length == 0){
-                error[6].setAttribute("style", "display: block")
-                error[6].focus()
+                this.dataUser.number = ""
+            }else if(this.dataUser.neighborhood.length == 0){
+                error[6].setAttribute("style", "display: block");
+                error[6].focus();
                 alert('Informe o seu bairro')
-            }else if(isNaN(elements.cep.val.value) || elements.cep.val.value.length != 8){
-                error[7].setAttribute("style", "display: block")
-                error[7].focus()
-                elements.cep.val.value = ""
+            }else if(isNaN(this.dataUser.cep) || this.dataUser.cep.length != 8){
+                error[7].setAttribute("style", "display: block");
+                error[7].focus();
+                this.dataUser.cep = ""
                 alert('digite um cep valido')
-            }else if(elements.tel.val.value.length < 11){
-                error[8].setAttribute("style", "display: block")
-                error[8].focus()
+            }else if(this.dataUser.tel.length != 14){
+                error[8].setAttribute("style", "display: block");
+                error[8].focus();
                 alert('Informe um telefone pra contato com DDD')
             }else{
-                anchor.setAttribute("href","#form-pet")
-                let formUser = document.querySelector("#form-user")
-                let formPet = document.querySelector("#form-pet")
-                formUser.setAttribute("style", "display: none")
-                formPet.setAttribute("style", "display: block")
+                anchor.setAttribute("href","#pet-form");
+                let userForm = document.querySelector("#user-form");
+                let userPet = document.querySelector("#pet-form");
+                userForm.setAttribute("style", "display: none");
+                userPet.setAttribute("style", "display: block");
             }
+        },
+        confirmPassword() {    // Verifica se as senhas coincidem entre si
+            var $ = document.querySelector.bind(document);
+            
+            if (this.dataUser.password.length < 8) {
+                $('.error_password').style.display = 'block';
+            } else {
+                $('.error_password').style.display = 'none';
+            }
+
+            if (this.dataUser.confirmPassword.length < 8 
+                    || this.dataUser.password != this.dataUser.confirmPassword) { 
+                $('.error_confirm_password').style.display = 'block';       
+            } else {
+                $('.error_confirm_password').style.display = 'none';
+            }
+        },
+        checkCEP() {           // Utiliza cep para preenchimento automático
+            const CEP = this.dataUser.cep.trim();
+            this.dataUser.address = '';
+            this.dataUser.neighborhood = '';
+            if (CEP.length != 8) {
+                    document.querySelector('.error_cep').style.display = 'block';
+            } else {
+                axios.get(`https://viacep.com.br/ws/${CEP}/json/`).then(response => {
+                    if (response.data.erro) {
+                        document.querySelector('.error_cep').style.display = 'block';
+                    } else {
+                        document.querySelector('.error_cep').style.display = 'none';
+                        this.dataUser.address = response.data.logradouro;
+                        this.dataUser.neighborhood = response.data.bairro;
+                    }                      
+                })   
+            }
+            
+        
+        },
+        formatTel() {          // Formata o campo TELEFONE
+            if (this.dataUser.tel.length == 11) {
+                var ddd = this.dataUser.tel.slice(0,2);
+                var part1 = this.dataUser.tel.slice(2,7);
+                var part2 = this.dataUser.tel.slice(7,11);
+                var finalString = '('+ ddd + ')' + part1 + '-' + part2;
+                this.dataUser.tel = finalString;
+            } else {
+                this.resetString();
+            }
+        },
+        resetString() {        // Remove simbolos da String
+            this.dataUser.tel = this.dataUser.tel.replace('(', '');
+            this.dataUser.tel = this.dataUser.tel.replace(')', '');
+            this.dataUser.tel = this.dataUser.tel.replace('-', '');
+        },
+        previewPhoto(e) {
+            try {
+                this.imagePreview = e.target.files[0];
+                this.selected = true;
+                var img = document.querySelector("#preview-pet");
+                var reader = new FileReader();
+                reader.onload = event => {
+                    img.src = event.target.result;
+                    console.log(img.src);
+                }            
+                reader.readAsDataURL(this.imagePreview);
+            } catch (error) {
+                console.error(error);
+            }
+        },
+        submitImage() {
+            const CLIENT_ID = 'b2301735476d975';
+            const doUpload = (url, options) => {
+                const callBack = (resolve, reject) => {
+                    fetch(url, options)
+                    .then(response => response.json())
+                    .then(resolve)
+                    .catch(reject)
+                }
+                return new Promise(callBack);
+            }
+            const data =  new FormData();
+            data.append('image', this.imagePreview);
+
+            doUpload('https://api.imgur.com//image', {
+                method : 'POST',
+                body : data,
+                headers : {
+                    'Authorization' : `Client-ID ${CLIENT_ID}`,
+                }
+            })
+            .then(resolve => {
+                console.log(resolve.data.link);
+                this.dataPet.photo = this.data.link;
+            })
+            .catch(console.error)
+            .finally(this.submitForm())
+        },
+        submitForm() {
+            this.resetString();
+            const URL = 'https://jsonplaceholder.typicode.com/posts';
+            fetch(URL, {
+                method : 'POST',
+                body : JSON.stringify(this.formData),
+                headers : {
+                    'Content-type' : 'application/json; charset=UTF-8'
+                },
+            }).then(response => response.json())
+            .then(json => console.log(json))
+            .catch(error => console.error(error))
+            .finally(alert('seus dados foram salvos no servidor'));
         }
-    }
+
+    },
 }
 </script>
 
@@ -332,7 +502,8 @@ export default {
         display: none;
         font-size: 1.8rem;
         color: rgb(255, 158, 94);
-        margin-bottom: 20rem;
+        margin-bottom: 0rem;
+        transition: all 500ms;
     }
     @media(min-width: 800px){
         .error_tag{
@@ -371,13 +542,13 @@ export default {
     }
    
 /*=============================FORM USER================================== */
-    #form-user{
+    #user-form{
         overflow: hidden;
         position: sticky;
         z-index: 8;
         left: 0;
         width: 100%;
-        height: 120rem;
+        height: 100%;
         background-color: rgb(104, 4, 235);
         color: white;
         padding: 5rem 2rem;
@@ -386,7 +557,8 @@ export default {
     .input-block{
         padding: 1rem 0;
         color: rgb(4, 255, 255);
-        height: 10.6rem;
+        height: 100%;
+        
     }
     .input-block input{
         display: flex;
@@ -419,7 +591,7 @@ export default {
         margin-bottom: .1rem;
         color: rgb(4, 255, 255);
     }
-    #form-user a{
+    #user-form a{
         display: block;
         text-align: center;
         margin: 1.8rem auto;
@@ -430,14 +602,14 @@ export default {
         transition: all 300ms;
         cursor: pointer;
     }
-    #form-user a:hover{
+    #user-form a:hover{
         background: rgb(3, 196, 180);
     }
     @media(min-width: 800px){
         label,input,legend, *{
             font-size: 25px;
         }
-        #register-container #form-user{
+        #register-container #user-form{
             position: static;
             z-index: 5;
             width: 100%;
@@ -447,10 +619,10 @@ export default {
             padding: 50px 20px;
 
         }
-        #form-user .top_bar{
+        #user-form .top_bar{
             width: 100%;
         }
-        #form-user .top_bar #routy{
+        #user-form .top_bar #routy{
             display: block;
             width: 100%;
             z-index: 2;        
@@ -461,7 +633,7 @@ export default {
             border-radius: 0;
             font-size: 20px;
         }
-        #form-user legend{
+        #user-form legend{
             display: block;
             text-align: center;
             font-size: 40px;
@@ -469,7 +641,7 @@ export default {
             margin-bottom: 30px;
             padding-top: 10px;
         }
-        #form-user .flex{
+        #user-form .flex{
             display: grid;
             column-gap: 30px;
             justify-content: space-between;
@@ -480,8 +652,10 @@ export default {
             width: 100%;
         }
         .input-block{
-            height: 100px;
+            height: 100%;
+            margin: 0;
             color: transparent;
+            
         }
         .input-block input{
             margin-top: 10px;
@@ -500,7 +674,7 @@ export default {
             width: 100%;
             justify-content: right;
         }
-        #form-user #btn_next a{
+        #user-form #btn_next a{
             height: 50px;
             width: 300px;
             display: flex;
@@ -510,7 +684,7 @@ export default {
         }
     }
     /* =======================FORM PET==================================== */
-    #form-pet header a{
+    #pet-form header a{
         position: relative;
         width: 20%;
         display: flex;
@@ -522,14 +696,14 @@ export default {
         background: rgb(0, 255, 234);
         margin-bottom: 2rem;
     }
-    #form-pet header a{
+    #pet-form header a{
         color: rgb(2, 119, 134);
     }
-    #form-pet header a:hover{
+    #pet-form header a:hover{
         color: rgb(0, 255, 234);
         background-color: rgb(0, 168, 160);
     }
-    #form-pet{
+    #pet-form{
         position: relative;
         z-index:1;
         left: 0;
@@ -542,11 +716,49 @@ export default {
         padding-top: 2rem;    
         display: none;         
     }
-    #form-pet .input-block input[type=checkbox]{
+    #pet-form .add-photo{
+        display: block;
+        margin: 2rem 0;
+    }
+    #pet-form .add-photo .unselected{
+        width: 100%;
+        display: flex;
+        border: .19rem solid  rgb(0, 255, 234);
+        border-bottom: .5rem solid  rgb(4, 255, 255);
+        border-radius: 1rem;
+        padding: 0rem;
+        height: 30rem;
+        justify-content: center;
+        align-items: center;
+        color: rgb(0, 255, 255);
+        cursor: pointer;
+    }
+    #pet-form .add-photo .selected{
+        height: 7rem;
+        width: 100%;
+        display: flex;
+        border: .2rem solid  #d6027e;
+        border-bottom: .5rem solid  #d6027e;
+        border-radius: 1rem;
+        padding: 0rem;
+        justify-content: center;
+        align-items: center;
+        color: rgb(40, 224, 24);
+        cursor: pointer;
+    }
+    .add-photo #preview-pet{
+        border: .3rem solid  #d6027e;
+        border-bottom: .5rem solid  #d6027e;
+        padding: .5rem;
+        border-radius: 1rem;
+        width: 100%;
+    }
+    
+    #pet-form .input-block input[type=checkbox]{
         height: 2.5rem;
         
     }
-    #form-pet .input-block input:focus, #form-pet .input-block input:valid{
+    #pet-form .input-block input:focus, #pet-form .input-block input:valid{
         padding: 1rem;
         height: 5.6rem;
         background-color: rgb(4, 255, 234);
@@ -554,7 +766,7 @@ export default {
         color:rgb(2, 119, 134)
     }
     
-    #form-pet .select-block select{
+    #pet-form .select-block select{
         width:100%;
         height: 6rem;
         border-radius: 1rem;
@@ -563,24 +775,24 @@ export default {
         color: rgb(2, 119, 134);
         margin-bottom: 4rem;
     }
-    #form-pet .select-block select option{
+    #pet-form .select-block select option{
         font-size: .8rem;
         width: 10rem;
         color: rgb(2, 119, 134);
         box-shadow: none;
     }
-    #form-pet .checkbox-house, 
-    #form-pet [type=checkbox],
-    #form-pet .checkbox-medal{
+    #pet-form .checkbox-house, 
+    #pet-form [type=checkbox],
+    #pet-form .checkbox-medal{
         display: grid;
         grid-template-columns: 6% 1fr;
         align-items: center;
         height: 5rem;
     }   
-    #form-pet .checkbox-house label{
+    #pet-form .checkbox-house label{
         margin-left: 1rem;
     } 
-    #form-pet .vacination_field .input-block{
+    #pet-form .vacination_field .input-block{
         display: grid;
         grid-template-columns: 6% 1fr;
         align-items: center;
@@ -596,6 +808,7 @@ export default {
         color: rgb(2, 119, 134);
     }
     button{
+        display: block;
         margin-top: 5rem;
         width: 100%;
         height: 8rem;
@@ -604,7 +817,7 @@ export default {
         color: rgb(2, 119, 134);
     }
     @media(min-width: 800px){
-        #form-pet header a{
+        #pet-form header a{
             color: rgb(2, 119, 134);
             display: block; 
             height: 35px;
@@ -616,37 +829,74 @@ export default {
             margin-bottom: 30px;
             transition: all 500ms;
         }
-        #form-pet{
+        #pet-form{
             padding: 20px;
             height: 100%;
         }
-        #form-pet .input-block input:focus, #form-pet .input-block input:valid{
+         #pet-form .add-photo{
+            width: 50%;
+            position: relative;
+            display: flex;
+            align-items: center;            
+        }
+        #pet-form .add-photo .unselected{
+            height: 300px;
+            width: 100%;
+            font-size: 30px;
+            transition: all 400ms;
+        }
+        #pet-form .add-photo .selected{
+            position: absolute;
+            display: flex;
+            top: 0;
+            transition: all 400ms;
+            height: 100%;
+            width: 100%;
+            font-size: 20px;
+            opacity: 0;
+        }
+        #pet-form .add-photo .selected:hover{
+            opacity: 1;
+            background: black;
+        }
+        #pet-form .add-photo .unselected:hover,
+        #pet-form .add-photo .selected:hover{
+            background: rgba(255, 0, 98, 0.39);
+            color: white;
+        }
+        #pet-form .add-photo #preview-pet,
+        #pet-form .add-photo .unselected,
+        #pet-form .add-photo .selected{
+            border: 2px solid #d6027e;
+            border-bottom: 4px solid#d6027e;
+        }
+        #pet-form .input-block input:focus, #pet-form .input-block input:valid{
             height: 50px;
         }
-        #form-pet .input-block input[type=checkbox]{
+        #pet-form .input-block input[type=checkbox]{
             height: 15px;
         }
-        #form-pet fieldset legend, legend{
+        #pet-form fieldset legend, legend{
             font-size: 40px;
         }
-        #form-pet .select-block{
+        #pet-form .select-block{
             padding: 20px 0;
         }
-        #form-pet .select-block select{
+        #pet-form .select-block select{
             margin: 0;
             margin-left: 10px;
             width: 20%;
             height: 50px;
         }
-        #form-pet .select-block select option{
+        #pet-form .select-block select option{
             font-size: 20px;
             
         }
-        #form-pet .vacination_field .input-block{
+        #pet-form .vacination_field .input-block{
             padding: 0;
             height: 50px;
         }
-         #form-pet .vacination_field .subinput-block input{
+         #pet-form .vacination_field .subinput-block input{
              height: 50px;
              transition: all 500ms;
              margin-left: 10px;

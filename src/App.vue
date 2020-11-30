@@ -18,7 +18,7 @@
   html,body{
     min-width: 60rem;
     height: 100vh;
-    /* overflow: hidden; */
+    
   }
   input::-webkit-inner-spin-button,
   input::-webkit-outer-spin-button{
